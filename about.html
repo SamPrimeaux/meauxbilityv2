@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>About Us - Inner Animal Media</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --ice-white: rgba(255, 255, 255, .95);
+            --light-blue: #4A9FFF;
+            --blue-hover: #3B8EEE;
+            --deep-blue: #2D7DD2;
+            --sky-blue: rgba(74, 159, 255, .1);
+            --text-dark: #0A1628;
+            --text-muted: rgba(10, 22, 40, .7);
+            --border-frost: rgba(74, 159, 255, .2);
+            --shadow-soft: rgba(74, 159, 255, .15);
+            --nav-h: 80px;
+            --max-w: 1200px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            padding-top: var(--nav-h);
+            color: var(--text-dark);
+            background: #fff;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-h);
+            background: rgba(255, 255, 255, .98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-frost);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+        }
+
+        .nav-logo {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--deep-blue);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color .3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--light-blue);
+        }
+
+        .nav-cta {
+            background: var(--light-blue);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background .3s;
+        }
+
+        .nav-cta:hover {
+            background: var(--blue-hover);
+        }
+
+        .hero {
+            padding: 120px 5% 80px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(74, 159, 255, .05), rgba(45, 125, 210, .02));
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 5vw, 64px);
+            font-weight: 900;
+            color: var(--text-dark);
+            margin-bottom: 24px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .content {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 80px 5%;
+        }
+
+        .content-section {
+            margin-bottom: 64px;
+        }
+
+        .content-section h2 {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 24px;
+        }
+
+        .content-section p {
+            font-size: 18px;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin: 64px 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 32px;
+            background: var(--sky-blue);
+            border-radius: 16px;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--deep-blue);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="/" class="nav-logo">Inner Animal Media</a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/services">Services</a></li>
+            <li><a href="/work">Work</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
+        </ul>
+        <a href="/start-project" class="nav-cta">Start Project</a>
+    </nav>
+
+    <section class="hero">
+        <h1>About Inner Animal Media</h1>
+        <p>We're a creative digital agency transforming ideas into exceptional digital experiences</p>
+    </section>
+
+    <section class="content">
+        <div class="content-section">
+            <h2>Our Story</h2>
+            <p>Inner Animal Media was founded with a simple mission: to help brands unlock their full potential through
+                innovative design and strategic digital solutions. We believe every brand has an inner story waiting to
+                be told, and we're here to bring it to life.</p>
+            <p>With years of experience in web design, branding, and digital strategy, our team combines creativity with
+                technical expertise to deliver results that matter. We don't just create beautiful designs—we build
+                digital experiences that drive growth and engagement.</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">250+</div>
+                <div class="stat-label">Projects Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Client Satisfaction</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Happy Clients</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">15</div>
+                <div class="stat-label">Awards Won</div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Our Approach</h2>
+            <p>We take a collaborative approach to every project, working closely with our clients to understand their
+                goals, challenges, and vision. Our process is built on transparency, communication, and a commitment to
+                excellence.</p>
+            <p>From initial concept to final launch, we ensure every detail is carefully crafted and every decision is
+                data-driven. We're not just service providers—we're your partners in digital success.</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Why Choose Us</h2>
+            <p>At Inner Animal Media, we combine creative vision with technical expertise to deliver solutions that
+                stand out. Our team stays ahead of industry trends and technologies, ensuring your brand always has a
+                competitive edge.</p>
+            <p>We measure our success by yours. Every project is an opportunity to exceed expectations and deliver value
+                that drives real business results.</p>
+        </div>
+    </section>
+</body>
+
+</html>

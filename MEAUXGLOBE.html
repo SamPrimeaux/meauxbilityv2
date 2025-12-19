@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="galaxy">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeauxAccess - Company Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg0: #02040a;
+      --bg1: #050814;
+      --panel: rgba(255, 255, 255, 0.03);
+      --glass: rgba(10, 16, 34, 0.65);
+      --stroke: rgba(255, 255, 255, 0.08);
+      --text: #f0f2f5;
+      --muted: #a0aec0;
+      --cyan: #6ec7ff;
+      --teal: #4aecdc;
+      --mint: #39f0c8;
+      --violet: #b79bff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg0);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--stroke);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .logo img {
+      height: 40px;
+      width: auto;
+    }
+    .logo-text {
+      font-size: 24px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--mint);
+      box-shadow: 0 0 8px var(--mint);
+    }
+
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .module-section {
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .module-card {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .module-card:hover {
+      border-color: var(--cyan);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(110, 199, 255, 0.2);
+    }
+
+    .module-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .module-name {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .module-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .main-title {
+      font-size: 48px;
+      font-weight: 900;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--cyan), var(--teal), var(--mint));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <a href="/MEAUXGLOBE.html" class="logo">
+      <img src="https://imagedelivery.net/g7wf09fCONpnidkRnR_5vw/f3364636-6210-4f0d-574a-e3f650476700/thumbnail" alt="Inner Animal Media">
+      <span class="logo-text">MeauxAccess ⇄</span>
+    </a>
+    <div class="status">
+      <span class="status-dot"></span>
+      <span>System Online</span>
+    </div>
+  </div>
+
+  <h1 class="main-title">Company-Wide Dashboard</h1>
+  <p class="subtitle">Unified Operations Hub</p>
+  <p style="color: var(--muted); margin-bottom: 40px;">
+    MeauxAccess brings your entire workflow into one powerful platform. From project management to analytics, content
+    creation to cloud storage— everything your team needs to collaborate and thrive.
+  </p>
+
+  <div class="module-section">
+    <div class="section-title">Core Modules</div>
+    <div class="modules-grid">
+      <a href="/MEAUXGLOBE.html" class="module-card">
+        <div class="module-icon">📊</div>
+        <div class="module-name">Dashboard</div>
+        <div class="module-desc">Overview and analytics</div>
+      </a>
+      <a href="/meauxmcp.html" class="module-card">
+        <div class="module-icon">💼</div>
+        <div class="module-name">MeauxWork 24</div>
+        <div class="module-desc">Project management and workflows</div>
+      </a>
+      <a href="#" class="module-card">
+        <div class="module-icon">📈</div>
+        <div class="module-name">MeauxStats</div>
+        <div class="module-desc">Analytics and insights</div>
+      </a>
+      <a href="/meaux-team.html" class="module-card">
+        <div class="module-icon">👥</div>
+        <div class="module-name">MeauxTeam</div>
+        <div class="module-desc">Team collaboration and chat</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="module-section">
+    <div class="section-title">Content & Media</div>
+    <div class="modules-grid">
+      <a href="/meaux-doc.html" class="module-card">
+        <div class="module-icon">📄</div>
+        <div class="module-name">MeauxDOC</div>
+        <div class="module-desc">Document management</div>
+      </a>
+      <a href="/meaux-photo.html" class="module-card">
+        <div class="module-icon">📸</div>
+        <div class="module-name">MeauxPHOTO</div>
+        <div class="module-desc">Photo library and assets</div>
+      </a>
+      <a href="/meaux-memories.html" class="module-card">
+        <div class="module-icon">🖼️</div>
+        <div class="module-name">MeauxMemories</div>
+        <div class="module-desc">Archive and memories</div>
+      </a>
+      <a href="/meaux-media.html" class="module-card">
+        <div class="module-icon">📱</div>
+        <div class="module-name">MeauxMedia</div>
+        <div class="module-desc">Media gallery and management</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="module-section">
+    <div class="section-title">Infrastructure</div>
+    <div class="modules-grid">
+      <a href="/meaux-cloud.html" class="module-card">
+        <div class="module-icon">☁️</div>
+        <div class="module-name">MeauxCloud</div>
+        <div class="module-desc">Cloud storage and projects</div>
+      </a>
+      <a href="/meaux-cad.html" class="module-card">
+        <div class="module-icon">🏗️</div>
+        <div class="module-name">MeauxCAD</div>
+        <div class="module-desc">Design and CAD tools</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="module-section">
+    <div class="section-title">Learning</div>
+    <div class="modules-grid">
+      <a href="/meaux-learn.html" class="module-card">
+        <div class="module-icon">🎓</div>
+        <div class="module-name">MeauxLearn</div>
+        <div class="module-desc">Learning resources and AI guides</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="module-section">
+    <div class="section-title">Integrations</div>
+    <div class="modules-grid">
+      <a href="/dev-tools.html" class="module-card">
+        <div class="module-icon">🎨</div>
+        <div class="module-name">Figma</div>
+        <div class="module-desc">Design integration</div>
+      </a>
+      <a href="/dev-tools.html" class="module-card">
+        <div class="module-icon">✨</div>
+        <div class="module-name">Spline</div>
+        <div class="module-desc">3D design tools</div>
+      </a>
+      <a href="/dev-tools.html" class="module-card">
+        <div class="module-icon">🤖</div>
+        <div class="module-name">Meshy.ai</div>
+        <div class="module-desc">AI 3D generation</div>
+      </a>
+      <a href="/dev-tools.html" class="module-card">
+        <div class="module-icon">🔷</div>
+        <div class="module-name">Adobe Suite</div>
+        <div class="module-desc">Creative tools</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="module-section">
+    <div class="section-title">Settings</div>
+    <div class="modules-grid">
+      <a href="#" class="module-card">
+        <div class="module-icon">⚙️</div>
+        <div class="module-name">Preferences</div>
+        <div class="module-desc">System settings</div>
+      </a>
+      <a href="#" class="module-card">
+        <div class="module-icon">💳</div>
+        <div class="module-name">Billing</div>
+        <div class="module-desc">Account and billing</div>
+      </a>
+    </div>
+  </div>
+</body>
+
+</html>
