@@ -182,17 +182,39 @@ async function getGitHubRepos(env, corsHeaders) {
     if (!githubToken) {
       return jsonResponse({ success: true, repos: [], count: 0, message: "GitHub token not configured" }, 200, corsHeaders);
     }
-    const response = await fetch("https://api.github.com/user/repos?per_page=100&sort=updated", {
+    
+    // Try token as-is first
+    let response = await fetch("https://api.github.com/user/repos?per_page=100&sort=updated", {
       headers: {
-        "Authorization": `Bearer ${githubToken}`,
+        "Authorization": `Bearer ${githubToken.trim()}`,
         "Accept": "application/vnd.github.v3+json",
         "User-Agent": "InnerAnimalMedia-Dashboard"
       }
     });
+    
+    // If Bearer fails, try token format
+    if (!response.ok && response.status === 401) {
+      response = await fetch("https://api.github.com/user/repos?per_page=100&sort=updated", {
+        headers: {
+          "Authorization": `token ${githubToken.trim()}`,
+          "Accept": "application/vnd.github.v3+json",
+          "User-Agent": "InnerAnimalMedia-Dashboard"
+        }
+      });
+    }
+    
     if (!response.ok) {
       const errorText = await response.text();
-      return jsonResponse({ success: false, error: `Failed to fetch GitHub repos: ${errorText}` }, response.status, corsHeaders);
+      let errorMsg = `Failed to fetch GitHub repos: ${errorText}`;
+      
+      // Provide helpful error message
+      if (response.status === 401) {
+        errorMsg = "GitHub token is invalid or expired. Please update GITHUB_TOKEN secret in Cloudflare Dashboard with a valid token from https://github.com/settings/tokens";
+      }
+      
+      return jsonResponse({ success: false, error: errorMsg }, response.status, corsHeaders);
     }
+    
     const repos = await response.json();
     const repoCount = Array.isArray(repos) ? repos.length : 0;
     return jsonResponse({ success: true, repos: repos || [], count: repoCount }, 200, corsHeaders);
