@@ -65,6 +65,13 @@
                 <span class="nav-text">Repositories</span>
                 <span class="nav-badge" id="reposCount">—</span>
             </a>
+            <a href="#connected" class="nav-item" onclick="filterConnected(); return false;">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span class="nav-text">Connected</span>
+                <span class="nav-badge" id="connectedReposCount" style="display: none;">0</span>
+            </a>
 
             <a href="/api/health" target="_blank" class="nav-item">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -168,6 +175,32 @@
                         portfolio</p>
                 </div>
                 <div class="header-actions">
+                    <div class="filter-buttons" style="display: flex; gap: 8px; margin-right: 12px;">
+                        <button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}"
+                            onclick="currentFilter='all'; renderProjects(); updateFilterButtons();" data-filter="all">
+                            All
+                        </button>
+                        <button class="filter-btn ${currentFilter === 'connected' ? 'active' : ''}"
+                            onclick="currentFilter='connected'; renderProjects(); updateFilterButtons();"
+                            data-filter="connected">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                style="margin-right: 4px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Connected
+                        </button>
+                        <button class="filter-btn ${currentFilter === 'repos' ? 'active' : ''}"
+                            onclick="currentFilter='repos'; renderProjects(); updateFilterButtons();"
+                            data-filter="repos">
+                            Repos
+                        </button>
+                        <button class="filter-btn ${currentFilter === 'workers' ? 'active' : ''}"
+                            onclick="currentFilter='workers'; renderProjects(); updateFilterButtons();"
+                            data-filter="workers">
+                            Workers
+                        </button>
+                    </div>
                     <div class="view-toggle">
                         <button class="view-btn active" onclick="switchView('list')" data-view="list">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -835,6 +868,44 @@
             color: white;
         }
 
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .filter-btn:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-color: var(--primary);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .filter-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke-width: 2;
+        }
+
         /* Section Card */
         .section-card {
             background: var(--card-bg);
@@ -1018,6 +1089,56 @@
             transform: translateY(-4px);
             box-shadow: 0 12px 24px var(--shadow);
             border-color: var(--primary);
+        }
+
+        .project-card.connected-repo {
+            border-color: var(--success);
+            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(16, 185, 129, 0.05) 100%);
+        }
+
+        .connected-badge {
+            background: var(--success);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .icon-button-sm.connected {
+            background: var(--success);
+            color: white;
+        }
+
+        .icon-button-sm.connected:hover {
+            background: #059669;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
         }
 
         .project-card-header {
@@ -1237,6 +1358,7 @@
         let workers = [];
         let repos = [];
         let charts = {};
+        let connectedRepos = JSON.parse(localStorage.getItem('connectedRepos') || '[]');
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
@@ -1276,11 +1398,16 @@
                     ...repos.map(r => ({
                         id: r.id?.toString() || r.name,
                         name: r.name,
+                        full_name: r.full_name,
                         type: 'repository',
                         status: r.archived ? 'inactive' : 'active',
                         url: r.html_url,
                         updated: r.updated_at,
-                        description: r.description || 'GitHub Repository'
+                        description: r.description || 'GitHub Repository',
+                        language: r.language || '',
+                        private: r.private || false,
+                        stars: r.stargazers_count || 0,
+                        forks: r.forks_count || 0
                     }))
                 ];
 
@@ -1295,6 +1422,7 @@
                 // Render projects
                 renderProjects();
                 updateAnalytics();
+                updateConnectedCount();
             } catch (error) {
                 console.error('Error loading data:', error);
             }
@@ -1334,11 +1462,22 @@
                             <span class="date-text">${date}</span>
                         </div>
                         <div class="table-cell">
-                            <button class="icon-button-sm" onclick="window.open('${project.url}', '_blank')" title="Open">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                                </svg>
-                            </button>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                ${project.type === 'repository' ? `
+                                    <button class="icon-button-sm ${isConnected(project.id) ? 'connected' : ''}" 
+                                        onclick="toggleRepoConnection('${project.id}', '${project.name}', '${project.url}')" 
+                                        title="${isConnected(project.id) ? 'Connected to build list' : 'Connect to build list'}">
+                                        <svg viewBox="0 0 24 24" fill="${isConnected(project.id) ? 'currentColor' : 'none'}" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                    </button>
+                                ` : ''}
+                                <button class="icon-button-sm" onclick="window.open('${project.url}', '_blank')" title="Open">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -1352,36 +1491,88 @@
                 const date = project.updated ? new Date(project.updated).toLocaleDateString() : 'N/A';
 
                 return `
-                    <div class="project-card">
+                    <div class="project-card ${isConnected(project.id) ? 'connected-repo' : ''}">
                         <div class="project-card-header">
                             <div class="project-icon" style="background: ${gradient};">${initials}</div>
-                            <button class="icon-button-sm" onclick="window.open('${project.url}', '_blank')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                                </svg>
-                            </button>
+                            <div style="display: flex; gap: 4px;">
+                                ${project.type === 'repository' ? `
+                                    <button class="icon-button-sm ${isConnected(project.id) ? 'connected' : ''}" 
+                                        onclick="toggleRepoConnection('${project.id}', '${project.name}', '${project.url}')" 
+                                        title="${isConnected(project.id) ? 'Connected' : 'Connect'}">
+                                        <svg viewBox="0 0 24 24" fill="${isConnected(project.id) ? 'currentColor' : 'none'}" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                    </button>
+                                ` : ''}
+                                <button class="icon-button-sm" onclick="window.open('${project.url}', '_blank')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                         <div class="project-card-body">
                             <h3 class="project-card-title">${project.name}</h3>
-                            <p class="project-card-description">${project.description}</p>
+                            <p class="project-card-description">${project.description || 'No description'}</p>
+                            ${project.type === 'repository' && project.language ? `<div style="margin-top: 8px; font-size: 12px; color: var(--text-muted);">${project.language}</div>` : ''}
                         </div>
                         <div class="project-card-footer">
                             <span class="status-badge status-${project.status}">${project.status}</span>
                             <span class="type-badge type-${project.type}">${project.type}</span>
+                            ${isConnected(project.id) ? '<span class="connected-badge">✓ Connected</span>' : ''}
                         </div>
                     </div>
                 `;
             }).join('');
         }
 
+        let currentFilter = 'all'; // 'all', 'connected', 'repos', 'workers'
+
         function filterProjects() {
             const search = document.getElementById('searchInput')?.value.toLowerCase() || '';
-            return allProjects.filter(p =>
-                p.name.toLowerCase().includes(search) ||
-                p.description.toLowerCase().includes(search) ||
-                p.type.toLowerCase().includes(search)
-            );
+            let filtered = allProjects;
+
+            // Apply type filter
+            if (currentFilter === 'connected') {
+                filtered = filtered.filter(p => isConnected(p.id));
+            } else if (currentFilter === 'repos') {
+                filtered = filtered.filter(p => p.type === 'repository');
+            } else if (currentFilter === 'workers') {
+                filtered = filtered.filter(p => p.type === 'worker');
+            }
+
+            // Apply search filter
+            if (search) {
+                filtered = filtered.filter(p =>
+                    p.name.toLowerCase().includes(search) ||
+                    (p.description || '').toLowerCase().includes(search) ||
+                    p.type.toLowerCase().includes(search) ||
+                    (p.full_name || '').toLowerCase().includes(search)
+                );
+            }
+
+            return filtered;
         }
+
+        function filterConnected() {
+            currentFilter = currentFilter === 'connected' ? 'all' : 'connected';
+            renderProjects();
+            updateFilterButtons();
+        }
+
+        function updateFilterButtons() {
+            // Update active state of filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.dataset.filter) {
+                    btn.classList.toggle('active', btn.dataset.filter === currentFilter);
+                }
+            });
+        }
+
+        // Initialize filter buttons on load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateFilterButtons();
+        });
 
         function getGradientForProject(name) {
             const colors = [
@@ -1394,6 +1585,57 @@
             ];
             const index = name.charCodeAt(0) % colors.length;
             return colors[index];
+        }
+
+        function isConnected(projectId) {
+            return connectedRepos.includes(projectId);
+        }
+
+        function toggleRepoConnection(projectId, projectName, projectUrl) {
+            const index = connectedRepos.indexOf(projectId);
+            if (index > -1) {
+                connectedRepos.splice(index, 1);
+                showNotification(`Disconnected ${projectName} from build list`, 'info');
+            } else {
+                connectedRepos.push(projectId);
+                showNotification(`Connected ${projectName} to build list`, 'success');
+            }
+            localStorage.setItem('connectedRepos', JSON.stringify(connectedRepos));
+            renderProjects();
+            updateConnectedCount();
+        }
+
+        function updateConnectedCount() {
+            const count = connectedRepos.length;
+            const badge = document.getElementById('connectedReposCount');
+            if (badge) {
+                badge.textContent = count;
+                badge.style.display = count > 0 ? 'inline-block' : 'none';
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            // Simple notification - you can enhance this
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 32px;
+                background: ${type === 'success' ? '#10b981' : '#0ea5e9'};
+                color: white;
+                padding: 16px 24px;
+                border-radius: 8px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+                z-index: 10000;
+                font-weight: 600;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
         }
 
         function updateAnalytics() {
