@@ -1488,11 +1488,10 @@
             status: getBadgeType({ name: w.name || w.id })
           }));
 
-          // Update stats immediately
+          // Update total count immediately
           document.getElementById("totalModules").textContent = allWorkers.length;
-          document.getElementById("activeModules").textContent = allWorkers.length;
           
-          // Filter and render
+          // Filter and render (this will update activeModules)
           filterWorkers(currentFilter, '');
         } else {
           showError(data.error || 'Failed to load workers');
