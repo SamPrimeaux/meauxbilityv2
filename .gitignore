@@ -164,5 +164,8 @@ dist
 !.dev.vars.example
 .env*
 !.env.example
+.env.local
+.env.production
 .wrangler/
 wrangler.jsonc
+API_KEYS_REFERENCE.md

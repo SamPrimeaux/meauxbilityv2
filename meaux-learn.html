@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="galaxy">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeauxLearn • Master API & AI Development</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg0: #02040a;
+      --bg1: #050814;
+      --panel: rgba(255, 255, 255, 0.03);
+      --glass: rgba(10, 16, 34, 0.65);
+      --stroke: rgba(255, 255, 255, 0.08);
+      --cyan: #6ec7ff;
+      --teal: #4aecdc;
+      --mint: #39f0c8;
+      --text: #f0f2f5;
+      --muted: #a0aec0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg0);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .header {
+      margin-bottom: 40px;
+    }
+
+    .title {
+      font-size: 48px;
+      font-weight: 900;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--cyan), var(--teal), var(--mint));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: var(--muted);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--stroke);
+      padding-bottom: 16px;
+    }
+
+    .tab {
+      padding: 12px 24px;
+      border-radius: 8px;
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    .tab.active {
+      background: rgba(110, 199, 255, 0.1);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    .content-section {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      color: var(--cyan);
+    }
+
+    .section-desc {
+      color: var(--muted);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .code-block {
+      background: #000;
+      border: 1px solid var(--stroke);
+      border-radius: 12px;
+      padding: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--mint);
+      margin: 16px 0;
+      overflow-x: auto;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--stroke);
+    }
+
+    .comparison-table th {
+      color: var(--cyan);
+      font-weight: 700;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-free {
+      background: rgba(57, 240, 200, 0.2);
+      color: var(--mint);
+    }
+
+    .badge-paid {
+      background: rgba(255, 111, 53, 0.2);
+      color: var(--orange);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 24px 0;
+    }
+
+    .feature-card {
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .feature-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .feature-name {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <h1 class="title">🎓 MeauxLearn</h1>
+    <p class="subtitle">Master API & AI Development - Systematic workflows, analytics integration, and Cloudflare
+      mastery</p>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="workflows">Workflows</div>
+    <div class="tab" data-tab="analytics">Analytics</div>
+    <div class="tab" data-tab="ai-agents">Free AI Agents</div>
+    <div class="tab" data-tab="cursor">Cursor</div>
+  </div>
+
+  <div id="workflows" class="content-section">
+    <h2 class="section-title">Systematic Workflow</h2>
+    <p class="section-desc">Scalable architecture for 100+ builds. With 100+ builds across Workers, D1, R2, and multiple
+      integrations, manual management becomes impossible. Let's build systems that scale.</p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📁</div>
+        <div class="feature-name">Project Structure</div>
+        <div class="feature-desc">Organize your codebase for maximum efficiency with monorepo and shared packages</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🗄️</div>
+        <div class="feature-name">Database Schema</div>
+        <div class="feature-desc">Keep D1 databases synchronized everywhere with Drizzle ORM</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔌</div>
+        <div class="feature-name">API Integration</div>
+        <div class="feature-desc">Centralize external API calls with retry logic and caching</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🚀</div>
+        <div class="feature-name">Automated Deployment</div>
+        <div class="feature-desc">Deploy with confidence using CI/CD and health checks</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      // lib/api-client.ts - Retry logic with backoff
+      class APIClient {
+      constructor(baseURL: string, apiKey: string) {
+      this.baseURL = baseURL;
+      this.apiKey = apiKey;
+      }
+
+      async fetch&lt;T&gt;(endpoint: string, retryCount = 0): Promise&lt;T&gt; {
+      try {
+      const response = await fetch(`${this.baseURL}${endpoint}`, {
+      headers: {
+      'Authorization': `Bearer ${this.apiKey}`,
+      'Content-Type': 'application/json',
+      },
+      });
+      if (!response.ok) throw new Error(`API Error: ${response.status}`);
+      return await response.json();
+      } catch (error) {
+      if (retryCount &lt; 3) {
+      await new Promise(r =&gt; setTimeout(r, 1000 * Math.pow(2, retryCount)));
+      return this.fetch&lt;T&gt;(endpoint, retryCount + 1);
+      }
+      throw error;
+      }
+      }
+      }
+    </div>
+  </div>
+
+  <div id="ai-agents" class="content-section" style="display: none;">
+    <h2 class="section-title">🚀 Free AI Alternatives</h2>
+    <p class="section-desc">Replace Cursor with Free AI Agents - Unlimited AI coding with Cloudflare Workers AI, Gemini,
+      and more free APIs</p>
+
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Free Tier</th>
+          <th>Models</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Cloudflare Workers AI</strong></td>
+          <td><span class="badge badge-free">FREE</span> 10,000 neurons/day</td>
+          <td>Llama 3.1, Mistral, CodeLlama</td>
+          <td>Code generation, debugging</td>
+        </tr>
+        <tr>
+          <td><strong>Google Gemini</strong></td>
+          <td><span class="badge badge-free">FREE</span> 60 requests/min</td>
+          <td>Gemini 1.5 Flash, Gemini 1.5 Pro</td>
+          <td>Long context, multimodal</td>
+        </tr>
+        <tr>
+          <td><strong>Groq</strong></td>
+          <td><span class="badge badge-free">FREE</span> 14,400 requests/day</td>
+          <td>Llama 3.1, Mixtral</td>
+          <td>Ultra-fast inference</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top: 32px; margin-bottom: 16px; color: var(--cyan);">Continue.dev - Free Cursor Alternative</h3>
+    <p class="section-desc">100% free and open source AI coding assistant that works with ANY API. Features tab
+      autocomplete, slash commands, and @-mentions for codebase context.</p>
+  </div>
+
+  <div id="analytics" class="content-section" style="display: none;">
+    <h2 class="section-title">Analytics Integration</h2>
+    <p class="section-desc">Track Workers, D1, R2, and API calls with centralized database tracking</p>
+
+    <div class="code-block">
+      -- Complete analytics schema for D1
+      CREATE TABLE worker_requests (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      worker_name TEXT NOT NULL,
+      method TEXT NOT NULL,
+      path TEXT NOT NULL,
+      status_code INTEGER NOT NULL,
+      duration_ms INTEGER NOT NULL,
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+      country TEXT
+      );
+
+      CREATE TABLE api_calls (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      service TEXT NOT NULL,
+      endpoint TEXT NOT NULL,
+      status_code INTEGER,
+      duration_ms INTEGER,
+      cost_usd DECIMAL(10, 6),
+      success BOOLEAN NOT NULL,
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
+    </div>
+  </div>
+
+  <div id="cursor" class="content-section" style="display: none;">
+    <h2 class="section-title">Solving Cursor Issues</h2>
+    <p class="section-desc">Fix context loss and improve AI coding with .cursorrules and modular architecture</p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📝</div>
+        <div class="feature-name">.cursorrules File</div>
+        <div class="feature-desc">Project-specific AI instructions for consistent code generation</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧩</div>
+        <div class="feature-name">Modular Architecture</div>
+        <div class="feature-desc">Break large files into focused modules Cursor can understand</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-name">Type Safety First</div>
+        <div class="feature-desc">TypeScript strict mode catches issues before production</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
+        tab.classList.add('active');
+        const sectionId = tab.dataset.tab;
+        document.getElementById(sectionId).style.display = 'block';
+      });
+    });
+  </script>
+</body>
+
+</html>

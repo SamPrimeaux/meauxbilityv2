@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,31 +16,150 @@
       --text: #f0f2f5;
       --muted: #a0aec0;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; display: grid; grid-template-columns: 260px 1fr; overflow: hidden; }
 
-    .sidebar { background: rgba(0,0,0,0.3); border-right: 1px solid var(--stroke); padding: 32px 20px; }
-    .sidebar-title { font-weight: 900; font-size: 20px; margin-bottom: 32px; color: var(--cyan); }
-    .nav-item { padding: 12px; border-radius: 10px; cursor: pointer; color: var(--muted); display: flex; align-items: center; gap: 12px; transition: 0.2s; margin-bottom: 4px; }
-    .nav-item:hover { background: var(--panel); color: var(--text); }
-    .nav-item.active { background: var(--panel); color: var(--cyan); border: 1px solid rgba(110, 199, 255, 0.2); }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    .main { background: var(--glass); backdrop-filter: blur(20px); overflow-y: auto; padding: 40px; }
-    .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
-    .path-bar { background: var(--panel); border: 1px solid var(--stroke); padding: 8px 16px; border-radius: 8px; font-size: 13px; color: var(--muted); }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      overflow: hidden;
+    }
 
-    .file-list { display: grid; gap: 1px; background: var(--stroke); border: 1px solid var(--stroke); border-radius: 12px; overflow: hidden; }
-    .file-item { background: var(--bg); padding: 16px 20px; display: grid; grid-template-columns: 40px 1fr 150px 100px; align-items: center; transition: 0.2s; cursor: pointer; }
-    .file-item:hover { background: var(--panel); }
-    .file-icon { font-size: 20px; }
-    .file-name { font-weight: 600; font-size: 14px; }
-    .file-size, .file-date { font-size: 13px; color: var(--muted); }
+    .sidebar {
+      background: rgba(0, 0, 0, 0.3);
+      border-right: 1px solid var(--stroke);
+      padding: 32px 20px;
+    }
 
-    .storage-card { margin-top: 40px; background: var(--panel); border: 1px solid var(--stroke); border-radius: 16px; padding: 20px; }
-    .progress-bar { height: 8px; background: var(--bg); border-radius: 99px; margin: 12px 0; overflow: hidden; }
-    .progress-fill { height: 100%; background: var(--cyan); width: 65%; border-radius: 99px; }
+    .sidebar-title {
+      font-weight: 900;
+      font-size: 20px;
+      margin-bottom: 32px;
+      color: var(--cyan);
+    }
+
+    .nav-item {
+      padding: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: 0.2s;
+      margin-bottom: 4px;
+    }
+
+    .nav-item:hover {
+      background: var(--panel);
+      color: var(--text);
+    }
+
+    .nav-item.active {
+      background: var(--panel);
+      color: var(--cyan);
+      border: 1px solid rgba(110, 199, 255, 0.2);
+    }
+
+    .main {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      overflow-y: auto;
+      padding: 40px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .project-card {
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .project-card:hover {
+      border-color: var(--cyan);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(110, 199, 255, 0.2);
+    }
+
+    .project-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      display: grid;
+      place-items: center;
+      font-size: 48px;
+    }
+
+    .project-info {
+      padding: 20px;
+    }
+
+    .project-name {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .project-meta {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .storage-card {
+      margin-top: 40px;
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: var(--bg);
+      border-radius: 99px;
+      margin: 12px 0;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--cyan);
+      width: 65%;
+      border-radius: 99px;
+    }
   </style>
 </head>
+
 <body>
   <div class="sidebar">
     <div class="sidebar-title">MeauxCloud</div>
@@ -47,39 +167,47 @@
     <div class="nav-item">Shared with Me</div>
     <div class="nav-item">Recent</div>
     <div class="nav-item">Trash</div>
-    
+
     <div class="storage-card">
       <div style="font-size: 12px; font-weight: 700;">Storage</div>
-      <div class="progress-bar"><div class="progress-fill"></div></div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
       <div style="font-size: 11px; color: var(--muted);">6.5 GB of 10 GB used</div>
     </div>
   </div>
   <div class="main">
     <div class="header">
-      <div class="path-bar">My Files / Project-Alpha / Assets</div>
-      <button style="background: var(--cyan); color: #000; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 800; cursor: pointer;">Upload Files</button>
+      <h1 class="title">☁️ MeauxCloud</h1>
+      <button
+        style="background: var(--cyan); color: #000; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 800; cursor: pointer;">New
+        Project</button>
     </div>
 
-    <div class="file-list">
-      <div class="file-item">
-        <div class="file-icon">📁</div>
-        <div class="file-name">Raw Footage</div>
-        <div class="file-date">Yesterday</div>
-        <div class="file-size">—</div>
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-thumb">🚀</div>
+        <div class="project-info">
+          <div class="project-name">MeauxAccess Dashboard</div>
+          <div class="project-meta">Cloudflare Worker • Updated 2h ago</div>
+        </div>
       </div>
-      <div class="file-item">
-        <div class="file-icon">📄</div>
-        <div class="file-name">Production-Brief.pdf</div>
-        <div class="file-date">Oct 12, 2024</div>
-        <div class="file-size">1.2 MB</div>
+      <div class="project-card">
+        <div class="project-thumb">🎨</div>
+        <div class="project-info">
+          <div class="project-name">Inner Animal Media</div>
+          <div class="project-meta">Website • Updated yesterday</div>
+        </div>
       </div>
-      <div class="file-item">
-        <div class="file-icon">🖼️</div>
-        <div class="file-name">Keyvisual-v2.png</div>
-        <div class="file-date">Oct 10, 2024</div>
-        <div class="file-size:">4.5 MB</div>
+      <div class="project-card">
+        <div class="project-thumb">⚡</div>
+        <div class="project-info">
+          <div class="project-name">MeauxOS Platform</div>
+          <div class="project-meta">Full Stack • Updated 3 days ago</div>
+        </div>
       </div>
     </div>
   </div>
 </body>
+
 </html>

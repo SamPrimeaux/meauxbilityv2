@@ -6,6 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#02040a" />
+  <meta name="description"
+    content="MeauxWork Galaxy Hub - Orchestrate your entire Cloudflare infrastructure from a single command center" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>" />
   <title>MeauxWork • Galaxy Hub • Fortune 500 OS</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,6 +19,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
     rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
   <style>
     :root {
@@ -480,6 +487,225 @@
       background: var(--muted-dark);
     }
 
+    /* ===== Toast Notifications ===== */
+    .toast-container {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--stroke);
+      border-radius: var(--r-md);
+      padding: 16px 20px;
+      min-width: 320px;
+      max-width: 400px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transform: translateX(400px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: auto;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .toast.success {
+      border-color: var(--mint);
+      box-shadow: 0 0 20px rgba(57, 240, 200, 0.2);
+    }
+
+    .toast.error {
+      border-color: var(--orange);
+      box-shadow: 0 0 20px rgba(255, 107, 53, 0.2);
+    }
+
+    .toast.info {
+      border-color: var(--cyan);
+      box-shadow: 0 0 20px rgba(110, 199, 255, 0.2);
+    }
+
+    .toast-icon {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .toast-content {
+      flex: 1;
+    }
+
+    .toast-title {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .toast-message {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .toast-close {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 4px;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+
+    .toast-close:hover {
+      opacity: 1;
+    }
+
+    /* ===== Command Palette ===== */
+    .command-palette {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 10001;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .command-palette.active {
+      display: flex;
+    }
+
+    .command-palette-box {
+      width: 600px;
+      max-width: 90vw;
+      background: var(--glass);
+      backdrop-filter: blur(40px);
+      border: 1px solid var(--stroke);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+
+    .command-palette-input {
+      width: 100%;
+      padding: 20px 24px;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 18px;
+      font-weight: 600;
+      outline: none;
+      border-bottom: 1px solid var(--stroke);
+    }
+
+    .command-palette-input::placeholder {
+      color: var(--muted-dark);
+    }
+
+    .command-palette-results {
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 8px;
+    }
+
+    .command-item {
+      padding: 12px 16px;
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: background 0.2s;
+    }
+
+    .command-item:hover,
+    .command-item.selected {
+      background: var(--panel-hover);
+    }
+
+    .command-item-icon {
+      width: 20px;
+      height: 20px;
+      color: var(--cyan);
+    }
+
+    .command-item-text {
+      flex: 1;
+    }
+
+    .command-item-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    .command-item-desc {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .command-item-shortcut {
+      font-size: 11px;
+      color: var(--muted-dark);
+      font-family: var(--font-mono);
+      padding: 4px 8px;
+      background: var(--bg0);
+      border-radius: 4px;
+    }
+
+    /* ===== Loading States ===== */
+    .loading-spinner {
+      width: 24px;
+      height: 24px;
+      border: 3px solid var(--stroke);
+      border-top-color: var(--cyan);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    /* ===== Chart Container ===== */
+    .chart-container {
+      position: relative;
+      height: 100%;
+      min-height: 300px;
+    }
+
     @media (max-width: 1024px) {
       .app-shell {
         grid-template-columns: 1fr;
@@ -491,6 +717,16 @@
 
       .app-grid {
         grid-template-columns: repeat(2, 1fr);
+      }
+
+      .toast-container {
+        right: 12px;
+        top: 12px;
+      }
+
+      .toast {
+        min-width: 280px;
+        max-width: calc(100vw - 24px);
       }
     }
   </style>
@@ -583,6 +819,15 @@
             </svg></div>
           <span>Settings</span>
         </div>
+        <div class="nav-item" onclick="openCommandPalette()" style="margin-top: 8px;">
+          <div class="nav-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg></div>
+          <span>Command Palette</span>
+          <span
+            style="margin-left: auto; font-size: 11px; color: var(--muted-dark); font-family: var(--font-mono);">⌘K</span>
+        </div>
       </div>
     </aside>
 
@@ -628,6 +873,23 @@
           <div class="stat-label">GitHub Builds</div>
           <div class="stat-value" id="github-count">—</div>
           <div class="stat-trend" style="color: var(--cyan)" id="github-status">Loading...</div>
+        </div>
+      </section>
+
+      <!-- Real-time Activity Feed -->
+      <section class="card" style="min-height: 300px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+          <h2 style="font-weight: 800; font-size: 20px;">Activity Feed</h2>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <div
+              style="width: 8px; height: 8px; background: var(--mint); border-radius: 50%; animation: pulse 2s infinite;">
+            </div>
+            <span style="font-size: 12px; color: var(--muted);">Live</span>
+          </div>
+        </div>
+        <div id="activityFeed"
+          style="display: flex; flex-direction: column; gap: 12px; max-height: 400px; overflow-y: auto;">
+          <!-- Activity items will be injected here -->
         </div>
       </section>
 
@@ -677,23 +939,37 @@
       <section class="card" style="flex: 1; min-height: 400px; display: flex; flex-direction: column; gap: 16px;">
         <div style="display: flex; align-items: center; justify-content: space-between;">
           <h2 style="font-weight: 800; font-size: 20px;">Deployment Health</h2>
-          <div class="btn btn-ghost" style="padding: 6px 12px; font-size: 12px;">View All Logs</div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-ghost" style="padding: 6px 12px; font-size: 12px;" onclick="refreshMetrics()">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                style="margin-right: 4px;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Refresh
+            </button>
+            <div class="btn btn-ghost" style="padding: 6px 12px; font-size: 12px;">View All Logs</div>
+          </div>
         </div>
-        <!-- Simplified Chart Visual -->
-        <div
-          style="flex: 1; border: 1px solid var(--stroke); border-radius: var(--r-md); background: var(--bg0); padding: 20px; position: relative; overflow: hidden;">
-          <svg width="100%" height="100%" viewBox="0 0 800 200" preserveAspectRatio="none">
-            <path d="M0,100 Q100,20 200,80 T400,120 T600,40 T800,100" fill="none" stroke="var(--cyan)" stroke-width="3"
-              opacity="0.6" />
-            <path d="M0,120 Q150,150 300,100 T500,140 T800,90" fill="none" stroke="var(--teal)" stroke-width="3"
-              opacity="0.4" />
-          </svg>
-          <div
-            style="position: absolute; bottom: 10px; left: 10px; font-family: var(--font-mono); font-size: 10px; color: var(--muted-dark);">
-            LATENCY (MS) OVER LAST 24H</div>
+        <!-- Real-time Chart -->
+        <div class="chart-container"
+          style="flex: 1; border: 1px solid var(--stroke); border-radius: var(--r-md); background: var(--bg0); padding: 20px; position: relative;">
+          <canvas id="metricsChart"></canvas>
         </div>
       </section>
     </main>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Command Palette -->
+  <div class="command-palette" id="commandPalette" onclick="if(event.target === this) closeCommandPalette()">
+    <div class="command-palette-box" onclick="event.stopPropagation()">
+      <input type="text" class="command-palette-input" id="commandInput" placeholder="Type a command or search..."
+        autocomplete="off" />
+      <div class="command-palette-results" id="commandResults"></div>
+    </div>
   </div>
 
   <div class="overlay" id="overlay" onclick="closeAll()"></div>
@@ -783,16 +1059,73 @@
             <button class="btn btn-primary">Initialize Build</button>
           </div>
         `;
+      } else if (type === 'settings') {
+        drawerTitle.textContent = 'Settings';
+        drawerBody.innerHTML = `
+          <div style="display: flex; flex-direction: column; gap: 24px;">
+            <div>
+              <h3 style="font-weight: 700; margin-bottom: 12px; font-size: 16px;">Theme</h3>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                <div class="theme-option" onclick="setTheme('galaxy')" style="padding: 16px; border: 2px solid var(--stroke); border-radius: 12px; cursor: pointer; text-align: center; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--cyan)'" onmouseout="this.style.borderColor='var(--stroke)'">
+                  <div style="width: 40px; height: 40px; margin: 0 auto 8px; border-radius: 8px; background: linear-gradient(135deg, #6ec7ff, #39f0c8);"></div>
+                  <div style="font-weight: 600; font-size: 13px;">Galaxy</div>
+                </div>
+                <div class="theme-option" onclick="setTheme('dark')" style="padding: 16px; border: 2px solid var(--stroke); border-radius: 12px; cursor: pointer; text-align: center; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--cyan)'" onmouseout="this.style.borderColor='var(--stroke)'">
+                  <div style="width: 40px; height: 40px; margin: 0 auto 8px; border-radius: 8px; background: linear-gradient(135deg, #1a1a1a, #2d2d2d);"></div>
+                  <div style="font-weight: 600; font-size: 13px;">Dark</div>
+                </div>
+                <div class="theme-option" onclick="setTheme('light')" style="padding: 16px; border: 2px solid var(--stroke); border-radius: 12px; cursor: pointer; text-align: center; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--cyan)'" onmouseout="this.style.borderColor='var(--stroke)'">
+                  <div style="width: 40px; height: 40px; margin: 0 auto 8px; border-radius: 8px; background: linear-gradient(135deg, #ffffff, #f0f0f0);"></div>
+                  <div style="font-weight: 600; font-size: 13px;">Light</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h3 style="font-weight: 700; margin-bottom: 12px; font-size: 16px;">Preferences</h3>
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <label style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--panel); border-radius: 8px;">
+                  <span style="font-weight: 600; font-size: 14px;">Auto-refresh metrics</span>
+                  <input type="checkbox" checked style="width: 20px; height: 20px; cursor: pointer;">
+                </label>
+                <label style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--panel); border-radius: 8px;">
+                  <span style="font-weight: 600; font-size: 14px;">Show notifications</span>
+                  <input type="checkbox" checked style="width: 20px; height: 20px; cursor: pointer;">
+                </label>
+                <label style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--panel); border-radius: 8px;">
+                  <span style="font-weight: 600; font-size: 14px;">Compact mode</span>
+                  <input type="checkbox" style="width: 20px; height: 20px; cursor: pointer;">
+                </label>
+              </div>
+            </div>
+            <div>
+              <h3 style="font-weight: 700; margin-bottom: 12px; font-size: 16px;">About</h3>
+              <div style="padding: 12px; background: var(--panel); border-radius: 8px; font-size: 13px; color: var(--muted); line-height: 1.6;">
+                <div style="margin-bottom: 8px;"><strong>Version:</strong> 2.0.0</div>
+                <div style="margin-bottom: 8px;"><strong>Build:</strong> ${new Date().toISOString().split('T')[0]}</div>
+                <div>MeauxWork Galaxy Hub - Orchestrate your entire Cloudflare infrastructure</div>
+              </div>
+            </div>
+          </div>
+        `;
       } else if (type === 'chat') {
         drawerTitle.textContent = 'AutoRAG Assistant';
         drawerBody.innerHTML = `
           <div style="display: flex; flex-direction: column; height: 100%; gap: 16px;">
-            <div style="flex: 1; border: 1px solid var(--stroke); border-radius: 12px; padding: 12px; overflow-y: auto;">
-              <div style="background: var(--panel); padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 13px;">Hello! I am your AutoRAG assistant. How can I help you today?</div>
+            <div id="chatMessages" style="flex: 1; border: 1px solid var(--stroke); border-radius: 12px; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: var(--bg0);">
+              <div style="background: var(--panel); padding: 12px; border-radius: 8px; border-left: 3px solid var(--cyan);">
+                <div style="font-weight: 700; margin-bottom: 4px; color: var(--cyan);">AutoRAG Assistant</div>
+                <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">Hello! I am your AutoRAG assistant powered by advanced RAG (Retrieval-Augmented Generation). I can help you with:</div>
+                <ul style="margin: 8px 0 0 20px; font-size: 13px; color: var(--muted); line-height: 1.8;">
+                  <li>Answering questions about your infrastructure</li>
+                  <li>Analyzing deployment metrics</li>
+                  <li>Providing insights on your projects</li>
+                  <li>Helping with Cloudflare Workers configuration</li>
+                </ul>
+              </div>
             </div>
             <div style="display: flex; gap: 8px;">
-              <input type="text" placeholder="Ask a question..." style="flex: 1; padding: 12px; background: var(--bg0); border: 1px solid var(--stroke); color: #fff; border-radius: 8px;">
-              <button class="btn btn-primary">Send</button>
+              <input type="text" id="chatInput" placeholder="Ask a question..." style="flex: 1; padding: 12px; background: var(--bg0); border: 1px solid var(--stroke); color: #fff; border-radius: 8px; font-size: 14px;" onkeypress="if(event.key === 'Enter') sendChatMessage()">
+              <button class="btn btn-primary" onclick="sendChatMessage()">Send</button>
             </div>
           </div>
         `;
@@ -817,6 +1150,531 @@
       overlay.classList.remove('active');
       drawer.classList.remove('active');
     }
+
+    // ===== Toast Notification System =====
+    function showToast(message, type = 'info', title = null) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+
+      const icons = {
+        success: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>',
+        error: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>',
+        info: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
+      };
+
+      toast.innerHTML = `
+        <div class="toast-icon" style="color: ${type === 'success' ? 'var(--mint)' : type === 'error' ? 'var(--orange)' : 'var(--cyan)'}">${icons[type] || icons.info}</div>
+        <div class="toast-content">
+          ${title ? `<div class="toast-title">${title}</div>` : ''}
+          <div class="toast-message">${message}</div>
+        </div>
+        <button class="toast-close" onclick="this.parentElement.remove()">✕</button>
+      `;
+
+      container.appendChild(toast);
+      setTimeout(() => toast.classList.add('show'), 10);
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400);
+      }, 5000);
+    }
+
+    // ===== Real-time Chart =====
+    let metricsChart = null;
+    let chartData = {
+      labels: [],
+      latency: [],
+      requests: []
+    };
+
+    function initChart() {
+      const ctx = document.getElementById('metricsChart');
+      if (!ctx) return;
+
+      // Generate initial data
+      const now = new Date();
+      for (let i = 23; i >= 0; i--) {
+        const time = new Date(now - i * 60 * 60 * 1000);
+        chartData.labels.push(time.getHours() + ':00');
+        chartData.latency.push(Math.random() * 100 + 50);
+        chartData.requests.push(Math.random() * 1000 + 500);
+      }
+
+      metricsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: chartData.labels,
+          datasets: [
+            {
+              label: 'Latency (ms)',
+              data: chartData.latency,
+              borderColor: 'rgb(110, 199, 255)',
+              backgroundColor: 'rgba(110, 199, 255, 0.1)',
+              tension: 0.4,
+              fill: true,
+              yAxisID: 'y'
+            },
+            {
+              label: 'Requests',
+              data: chartData.requests,
+              borderColor: 'rgb(74, 236, 220)',
+              backgroundColor: 'rgba(74, 236, 220, 0.1)',
+              tension: 0.4,
+              fill: true,
+              yAxisID: 'y1'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                color: 'rgb(240, 242, 245)',
+                font: { family: 'Inter', size: 12 },
+                usePointStyle: true,
+                padding: 15
+              }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(5, 8, 20, 0.95)',
+              titleColor: 'rgb(240, 242, 245)',
+              bodyColor: 'rgb(240, 242, 245)',
+              borderColor: 'rgba(110, 199, 255, 0.3)',
+              borderWidth: 1,
+              padding: 12,
+              displayColors: true
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                color: 'rgba(255, 255, 255, 0.05)',
+                drawBorder: false
+              },
+              ticks: {
+                color: 'rgba(160, 174, 192, 0.8)',
+                font: { family: 'JetBrains Mono', size: 10 }
+              }
+            },
+            y: {
+              type: 'linear',
+              display: true,
+              position: 'left',
+              grid: {
+                color: 'rgba(255, 255, 255, 0.05)',
+                drawBorder: false
+              },
+              ticks: {
+                color: 'rgba(110, 199, 255, 0.8)',
+                font: { family: 'JetBrains Mono', size: 10 }
+              },
+              title: {
+                display: true,
+                text: 'Latency (ms)',
+                color: 'rgb(110, 199, 255)',
+                font: { family: 'Inter', size: 11, weight: '600' }
+              }
+            },
+            y1: {
+              type: 'linear',
+              display: true,
+              position: 'right',
+              grid: {
+                drawOnChartArea: false,
+              },
+              ticks: {
+                color: 'rgba(74, 236, 220, 0.8)',
+                font: { family: 'JetBrains Mono', size: 10 }
+              },
+              title: {
+                display: true,
+                text: 'Requests',
+                color: 'rgb(74, 236, 220)',
+                font: { family: 'Inter', size: 11, weight: '600' }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function refreshMetrics() {
+      showToast('Refreshing metrics...', 'info');
+
+      // Simulate new data
+      const now = new Date();
+      chartData.labels.shift();
+      chartData.labels.push(now.getHours() + ':' + String(now.getMinutes()).padStart(2, '0'));
+      chartData.latency.shift();
+      chartData.latency.push(Math.random() * 100 + 50);
+      chartData.requests.shift();
+      chartData.requests.push(Math.random() * 1000 + 500);
+
+      if (metricsChart) {
+        metricsChart.update('active');
+        showToast('Metrics updated successfully', 'success');
+      }
+    }
+
+    // ===== Command Palette =====
+    const searchableItems = [
+      { id: 'talk', title: 'MeauxTalk', desc: 'Team communications app', category: 'Apps', url: '/talk', icon: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z' },
+      { id: 'board', title: 'MeauxBoard', desc: 'Project management board', category: 'Apps', url: '/board', icon: 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10' },
+      { id: 'photo', title: 'MeauxPhoto', desc: 'Asset library and photo management', category: 'Apps', url: '/photo', icon: 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' },
+      { id: 'design', title: 'MeauxDesign', desc: 'AI design tools and editor', category: 'Apps', url: '/design', icon: 'M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01' },
+      { id: 'docs', title: 'MeauxDocs', desc: 'Documentation and knowledge base', category: 'Apps', url: '/docs', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' },
+      { id: 'cloud', title: 'MeauxCloud', desc: 'Cloud storage and file management', category: 'Apps', url: '/cloud', icon: 'M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z' },
+      { id: 'mail', title: 'MeauxMail', desc: 'Email management system', category: 'Apps', url: '/mail', icon: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' },
+      { id: 'calendar', title: 'MeauxCalendar', desc: 'Calendar and event management', category: 'Apps', url: '/calendar', icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' },
+      { id: 'wallet', title: 'MeauxWallet', desc: 'Financial tracking and management', category: 'Apps', url: '/wallet', icon: 'M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z' }
+    ];
+
+    const commands = [
+      { id: 'dashboard', title: 'Go to Dashboard', desc: 'Navigate to main dashboard', icon: 'M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z', shortcut: '⌘K', action: () => location.href = '/dashboard' },
+      { id: 'deploy', title: 'New Deployment', desc: 'Create a new deployment', icon: 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10', shortcut: '⌘D', action: () => toggleDrawer('deploy') },
+      { id: 'chat', title: 'Open AutoRAG', desc: 'Chat with AI assistant', icon: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z', shortcut: '⌘C', action: () => toggleDrawer('chat') },
+      { id: 'sql', title: 'SQL Console', desc: 'Open database query editor', icon: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4', shortcut: '⌘S', action: () => location.href = '/dashboard/dev/sql' },
+      { id: 'settings', title: 'Settings', desc: 'Open settings panel', icon: 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z', shortcut: '⌘,', action: () => toggleDrawer('settings') }
+    ];
+
+    let selectedCommandIndex = 0;
+
+    function openCommandPalette() {
+      const palette = document.getElementById('commandPalette');
+      const input = document.getElementById('commandInput');
+      palette.classList.add('active');
+      input.focus();
+      filterCommands('');
+    }
+
+    function closeCommandPalette() {
+      const palette = document.getElementById('commandPalette');
+      palette.classList.remove('active');
+      document.getElementById('commandInput').value = '';
+    }
+
+    function filterCommands(query) {
+      const results = document.getElementById('commandResults');
+      if (!query.trim()) {
+        // Show all commands and apps
+        const allItems = [...commands, ...searchableItems.map(item => ({
+          id: item.id,
+          title: item.title,
+          desc: item.desc,
+          icon: item.icon,
+          category: item.category,
+          action: () => location.href = item.url
+        }))];
+        results.innerHTML = allItems.map((cmd, index) => `
+          <div class="command-item ${index === selectedCommandIndex ? 'selected' : ''}" onclick="executeSearchItem('${cmd.id}', ${cmd.action ? 'true' : 'false'})">
+            <svg class="command-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${cmd.icon}" />
+            </svg>
+            <div class="command-item-text">
+              <div class="command-item-title">${cmd.title}${cmd.category ? ` <span style="color: var(--muted-dark); font-size: 11px;">${cmd.category}</span>` : ''}</div>
+              <div class="command-item-desc">${cmd.desc}</div>
+            </div>
+            ${cmd.shortcut ? `<div class="command-item-shortcut">${cmd.shortcut}</div>` : ''}
+          </div>
+        `).join('');
+        return;
+      }
+
+      const lowerQuery = query.toLowerCase();
+      const filteredCommands = commands.filter(cmd =>
+        cmd.title.toLowerCase().includes(lowerQuery) ||
+        cmd.desc.toLowerCase().includes(lowerQuery)
+      );
+
+      const filteredApps = searchableItems.filter(item =>
+        item.title.toLowerCase().includes(lowerQuery) ||
+        item.desc.toLowerCase().includes(lowerQuery) ||
+        item.category.toLowerCase().includes(lowerQuery)
+      ).map(item => ({
+        id: item.id,
+        title: item.title,
+        desc: item.desc,
+        icon: item.icon,
+        category: item.category,
+        action: () => location.href = item.url
+      }));
+
+      const allFiltered = [...filteredCommands, ...filteredApps];
+
+      results.innerHTML = allFiltered.length > 0 ? allFiltered.map((cmd, index) => `
+        <div class="command-item ${index === selectedCommandIndex ? 'selected' : ''}" onclick="executeSearchItem('${cmd.id}', ${cmd.action ? 'true' : 'false'})">
+          <svg class="command-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${cmd.icon}" />
+          </svg>
+          <div class="command-item-text">
+            <div class="command-item-title">${cmd.title}${cmd.category ? ` <span style="color: var(--muted-dark); font-size: 11px;">${cmd.category}</span>` : ''}</div>
+            <div class="command-item-desc">${cmd.desc}</div>
+          </div>
+          ${cmd.shortcut ? `<div class="command-item-shortcut">${cmd.shortcut}</div>` : ''}
+        </div>
+      `).join('') : `
+        <div style="padding: 40px; text-align: center; color: var(--muted);">
+          <div style="font-size: 48px; margin-bottom: 16px;">🔍</div>
+          <div style="font-weight: 600; margin-bottom: 8px;">No results found</div>
+          <div style="font-size: 13px;">Try searching for apps, commands, or features</div>
+        </div>
+      `;
+
+      selectedCommandIndex = 0;
+    }
+
+    function executeSearchItem(id, isApp) {
+      if (isApp) {
+        const item = searchableItems.find(i => i.id === id);
+        if (item) {
+          closeCommandPalette();
+          location.href = item.url;
+        }
+      } else {
+        executeCommand(id);
+      }
+    }
+
+    function executeCommand(id) {
+      const cmd = commands.find(c => c.id === id);
+      if (cmd) {
+        closeCommandPalette();
+        cmd.action();
+      }
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        openCommandPalette();
+      }
+      if (e.key === 'Escape') {
+        closeCommandPalette();
+        closeAll();
+      }
+    });
+
+    document.getElementById('commandInput')?.addEventListener('input', (e) => {
+      filterCommands(e.target.value);
+    });
+
+    document.getElementById('commandInput')?.addEventListener('keydown', (e) => {
+      const results = document.getElementById('commandResults');
+      const items = results.querySelectorAll('.command-item');
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        selectedCommandIndex = Math.min(selectedCommandIndex + 1, items.length - 1);
+        items[selectedCommandIndex]?.scrollIntoView({ block: 'nearest' });
+        items.forEach((item, i) => {
+          item.classList.toggle('selected', i === selectedCommandIndex);
+        });
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        selectedCommandIndex = Math.max(selectedCommandIndex - 1, 0);
+        items[selectedCommandIndex]?.scrollIntoView({ block: 'nearest' });
+        items.forEach((item, i) => {
+          item.classList.toggle('selected', i === selectedCommandIndex);
+        });
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        const selected = items[selectedCommandIndex];
+        if (selected) selected.click();
+      }
+    });
+
+    // ===== Enhanced Chat =====
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const messages = document.getElementById('chatMessages');
+      if (!input || !input.value.trim()) return;
+
+      const message = input.value.trim();
+      input.value = '';
+
+      // Add user message
+      const userMsg = document.createElement('div');
+      userMsg.style.cssText = 'background: var(--panel); padding: 12px; border-radius: 8px; border-left: 3px solid var(--mint); align-self: flex-end; max-width: 80%;';
+      userMsg.innerHTML = `
+        <div style="font-weight: 700; margin-bottom: 4px; color: var(--mint);">You</div>
+        <div style="font-size: 13px; color: var(--text); line-height: 1.6;">${message}</div>
+      `;
+      messages.appendChild(userMsg);
+      messages.scrollTop = messages.scrollHeight;
+
+      // Simulate AI response
+      setTimeout(() => {
+        const aiMsg = document.createElement('div');
+        aiMsg.style.cssText = 'background: var(--panel); padding: 12px; border-radius: 8px; border-left: 3px solid var(--cyan); align-self: flex-start; max-width: 80%;';
+        aiMsg.innerHTML = `
+          <div style="font-weight: 700; margin-bottom: 4px; color: var(--cyan);">AutoRAG</div>
+          <div style="font-size: 13px; color: var(--text); line-height: 1.6;">${generateAIResponse(message)}</div>
+        `;
+        messages.appendChild(aiMsg);
+        messages.scrollTop = messages.scrollHeight;
+      }, 1000);
+    }
+
+    function generateAIResponse(query) {
+      const lower = query.toLowerCase();
+      if (lower.includes('deploy') || lower.includes('deployment')) {
+        return 'I can help you with deployments! You currently have 124 active workers. Would you like me to check the status of a specific deployment or help you create a new one?';
+      }
+      if (lower.includes('worker') || lower.includes('workers')) {
+        return 'Your Cloudflare Workers are running smoothly. The main dashboard worker (meauxaccessmvp) is handling requests with an average latency of 45ms. All systems operational!';
+      }
+      if (lower.includes('database') || lower.includes('d1') || lower.includes('sql')) {
+        return 'You have 12 D1 databases configured. The primary database (meaux-work-db) is active and handling queries efficiently. I can help you run queries or analyze your database structure.';
+      }
+      if (lower.includes('github') || lower.includes('repo')) {
+        return 'Your GitHub integration is active. I can help you manage repositories, check build status, or set up new deployments from your repos.';
+      }
+      return 'I understand your question. Based on your infrastructure, I can help you with deployments, workers, databases, or GitHub integration. What would you like to know more about?';
+    }
+
+    // Initialize chart on load
+    window.addEventListener('load', () => {
+      initChart();
+      showToast('Dashboard loaded successfully', 'success', 'Welcome!');
+      registerServiceWorker();
+    });
+
+    // ===== PWA Service Worker Registration =====
+    function registerServiceWorker() {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            console.log('Service Worker registered:', registration);
+            showToast('App is now installable!', 'info', 'PWA Ready');
+          })
+          .catch((error) => {
+            console.error('Service Worker registration failed:', error);
+          });
+      }
+    }
+
+    // ===== Install Prompt =====
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      showToast('Install this app for a better experience', 'info', 'Install Available');
+    });
+
+    function installApp() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            showToast('App installed successfully!', 'success');
+          }
+          deferredPrompt = null;
+        });
+      }
+    }
+
+    // ===== Real-time Activity Feed =====
+    const activityFeed = document.getElementById('activityFeed');
+    const activities = [
+      { type: 'deploy', message: 'Deployment completed successfully', project: 'meauxaccessmvp', time: '2m ago', icon: 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10', color: 'var(--mint)' },
+      { type: 'worker', message: 'Worker status updated', project: 'meauxv2', time: '5m ago', icon: 'M13 10V3L4 14h7v7l9-11h-7z', color: 'var(--cyan)' },
+      { type: 'database', message: 'Database query executed', project: 'meaux-work-db', time: '8m ago', icon: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4', color: 'var(--teal)' },
+      { type: 'github', message: 'New commit pushed', project: 'hybridprosaas-dashboard', time: '12m ago', icon: 'M12 4v16m8-8H4', color: 'var(--violet)' }
+    ];
+
+    function renderActivityFeed() {
+      if (!activityFeed) return;
+      activityFeed.innerHTML = activities.map(activity => `
+        <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: var(--panel); border-radius: 8px; border-left: 3px solid ${activity.color}; transition: all 0.2s;" onmouseover="this.style.background='var(--panel-hover)'" onmouseout="this.style.background='var(--panel)'">
+          <div style="width: 32px; height: 32px; border-radius: 6px; background: ${activity.color}20; display: grid; place-items: center; flex-shrink: 0;">
+            <svg width="16" height="16" fill="none" stroke="${activity.color}" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${activity.icon}" />
+            </svg>
+          </div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px; color: var(--text);">${activity.message}</div>
+            <div style="font-size: 11px; color: var(--muted); display: flex; gap: 8px; align-items: center;">
+              <span>${activity.project}</span>
+              <span>•</span>
+              <span>${activity.time}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addActivity(activity) {
+      activities.unshift(activity);
+      if (activities.length > 10) activities.pop();
+      renderActivityFeed();
+    }
+
+    // Simulate new activities
+    setInterval(() => {
+      const types = ['deploy', 'worker', 'database', 'github'];
+      const messages = [
+        'Deployment completed successfully',
+        'Worker status updated',
+        'Database query executed',
+        'New commit pushed',
+        'Build started',
+        'Cache cleared',
+        'API endpoint updated'
+      ];
+      const projects = ['meauxaccessmvp', 'meauxv2', 'meaux-work-db', 'hybridprosaas-dashboard'];
+
+      const newActivity = {
+        type: types[Math.floor(Math.random() * types.length)],
+        message: messages[Math.floor(Math.random() * messages.length)],
+        project: projects[Math.floor(Math.random() * projects.length)],
+        time: 'Just now',
+        icon: 'M13 10V3L4 14h7v7l9-11h-7z',
+        color: 'var(--cyan)'
+      };
+
+      addActivity(newActivity);
+      showToast(newActivity.message, 'info', newActivity.project);
+    }, 15000);
+
+    // ===== Theme System =====
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      showToast(`Theme changed to ${theme}`, 'success');
+
+      // Update theme option selection
+      document.querySelectorAll('.theme-option').forEach(opt => {
+        opt.style.borderColor = 'var(--stroke)';
+      });
+      event.currentTarget.style.borderColor = 'var(--cyan)';
+    }
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme') || 'galaxy';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+
+    // Auto-refresh stats every 30 seconds
+    setInterval(() => {
+      loadStats();
+      loadGitHubStats();
+      if (metricsChart) {
+        refreshMetrics();
+      }
+    }, 30000);
+
+    // Initialize activity feed
+    renderActivityFeed();
   </script>
 </body>
 

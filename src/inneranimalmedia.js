@@ -10,6 +10,15 @@ export default {
       "Access-Control-Allow-Headers": "Content-Type",
     };
 
+    // Security headers
+    const securityHeaders = {
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-XSS-Protection": "1; mode=block",
+      "Referrer-Policy": "strict-origin-when-cross-origin",
+      "Permissions-Policy": "geolocation=(), microphone=(), camera=()",
+    };
+
     if (request.method === "OPTIONS") {
       return new Response(null, { headers: corsHeaders });
     }
@@ -69,8 +78,10 @@ export default {
       return new Response(body, {
         headers: {
           ...corsHeaders,
+          ...securityHeaders,
           "Content-Type": contentType,
           "Cache-Control": "public, max-age=3600",
+          "X-Powered-By": "InnerAnimalMedia",
         },
       });
     } catch (error) {
@@ -84,15 +95,44 @@ export default {
 };
 
 async function handleAPI(path, request, env, corsHeaders) {
+  const securityHeaders = {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+  };
+
   if (path === "/api/github/repos") {
-    return getGitHubRepos(env, corsHeaders);
+    const response = await getGitHubRepos(env, corsHeaders);
+    return new Response(response.body, {
+      status: response.status,
+      headers: {
+        ...Object.fromEntries(response.headers.entries()),
+        ...securityHeaders,
+      },
+    });
   }
 
   if (path === "/api/workers") {
-    return getWorkers(env, corsHeaders);
+    const response = await getWorkers(env, corsHeaders);
+    return new Response(response.body, {
+      status: response.status,
+      headers: {
+        ...Object.fromEntries(response.headers.entries()),
+        ...securityHeaders,
+      },
+    });
   }
 
-  return new Response("Not Found", { status: 404, headers: corsHeaders });
+  if (path === "/api/health") {
+    return jsonResponse({
+      status: "healthy",
+      service: "Inner Animal Media",
+      version: "2.0.0",
+      timestamp: new Date().toISOString(),
+      domain: request.headers.get("host"),
+    }, 200, corsHeaders);
+  }
+
+  return new Response("Not Found", { status: 404, headers: { ...corsHeaders, ...securityHeaders } });
 }
 
 async function getGitHubRepos(env, corsHeaders) {

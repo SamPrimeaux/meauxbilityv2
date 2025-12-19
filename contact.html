@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Contact Us - Inner Animal Media</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --ice-white: rgba(255, 255, 255, .95);
@@ -21,18 +23,21 @@
             --nav-h: 80px;
             --max-w: 800px;
         }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             -webkit-font-smoothing: antialiased;
         }
+
         body {
             font-family: 'Inter', sans-serif;
             padding-top: var(--nav-h);
             color: var(--text-dark);
             background: #fff;
         }
+
         nav {
             position: fixed;
             top: 0;
@@ -48,26 +53,31 @@
             justify-content: space-between;
             padding: 0 5%;
         }
+
         .nav-logo {
             font-size: 20px;
             font-weight: 800;
             color: var(--deep-blue);
             text-decoration: none;
         }
+
         .nav-links {
             display: flex;
             gap: 32px;
             list-style: none;
         }
+
         .nav-links a {
             color: var(--text-dark);
             text-decoration: none;
             font-weight: 500;
             transition: color .3s;
         }
+
         .nav-links a:hover {
             color: var(--light-blue);
         }
+
         .nav-cta {
             background: var(--light-blue);
             color: white;
@@ -77,46 +87,55 @@
             font-weight: 600;
             transition: background .3s;
         }
+
         .nav-cta:hover {
             background: var(--blue-hover);
         }
+
         .hero {
             padding: 120px 5% 80px;
             text-align: center;
             background: linear-gradient(135deg, rgba(74, 159, 255, .05), rgba(45, 125, 210, .02));
         }
+
         .hero h1 {
             font-size: clamp(36px, 5vw, 64px);
             font-weight: 900;
             color: var(--text-dark);
             margin-bottom: 24px;
         }
+
         .hero p {
             font-size: 20px;
             color: var(--text-muted);
             max-width: 700px;
             margin: 0 auto;
         }
+
         .contact-section {
             max-width: var(--max-w);
             margin: 0 auto;
             padding: 80px 5%;
         }
+
         .contact-form {
             background: white;
             border: 1px solid var(--border-frost);
             border-radius: 16px;
             padding: 48px;
         }
+
         .form-group {
             margin-bottom: 24px;
         }
+
         .form-group label {
             display: block;
             font-weight: 600;
             color: var(--text-dark);
             margin-bottom: 8px;
         }
+
         .form-group input,
         .form-group textarea {
             width: 100%;
@@ -127,15 +146,18 @@
             font-size: 16px;
             transition: border-color .3s;
         }
+
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
             border-color: var(--light-blue);
         }
+
         .form-group textarea {
             min-height: 120px;
             resize: vertical;
         }
+
         .submit-btn {
             background: var(--light-blue);
             color: white;
@@ -147,32 +169,38 @@
             cursor: pointer;
             transition: background .3s;
         }
+
         .submit-btn:hover {
             background: var(--blue-hover);
         }
+
         .contact-info {
             margin-top: 64px;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 32px;
         }
+
         .info-card {
             text-align: center;
             padding: 32px;
             background: var(--sky-blue);
             border-radius: 16px;
         }
+
         .info-card h3 {
             font-size: 20px;
             font-weight: 700;
             color: var(--text-dark);
             margin-bottom: 12px;
         }
+
         .info-card p {
             color: var(--text-muted);
         }
     </style>
 </head>
+
 <body>
     <nav>
         <a href="/" class="nav-logo">Inner Animal Media</a>
@@ -228,4 +256,5 @@
         </div>
     </section>
 </body>
+
 </html>

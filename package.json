@@ -2,10 +2,15 @@
 	"name": "hybridprosaas-dashboard",
 	"version": "0.0.0",
 	"private": true,
+	"type": "module",
 	"scripts": {
 		"deploy": "wrangler deploy",
 		"dev": "wrangler dev",
-		"start": "wrangler dev"
+		"start": "wrangler dev",
+		"mcp:start": "node mcp-d1-server.js"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "^1.0.4"
 	},
 	"devDependencies": {
 		"wrangler": "^4.55.0"

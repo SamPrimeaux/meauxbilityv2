@@ -1,0 +1,44 @@
+name: Deploy Inner Animal Media
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/inneranimalmedia.js'
+      - 'wrangler.inneranimalmedia.jsonc'
+      - 'inneranimalmedia-index.html'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Deploy Worker
+        run: |
+          wrangler deploy --config wrangler.inneranimalmedia.jsonc
+
+      - name: Upload index.html to R2
+        run: |
+          wrangler r2 object put inneranimalmedia-assets/index.html \
+            --file=inneranimalmedia-index.html \
+            --content-type="text/html;charset=UTF-8"
+
+      - name: Verify Deployment
+        run: |
+          echo "✅ Worker deployed to: https://inneranimalmedia.meauxbility.workers.dev"
+          echo "✅ GitHub Pages: https://samprimeaux.github.io/inneranimalmedia/"

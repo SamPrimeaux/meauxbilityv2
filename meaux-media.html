@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeauxMedia • Media Gallery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg0: #02040a;
+      --glass: rgba(10, 16, 34, 0.65);
+      --panel: rgba(255, 255, 255, 0.03);
+      --stroke: rgba(255, 255, 255, 0.08);
+      --cyan: #6ec7ff;
+      --teal: #4aecdc;
+      --text: #f0f2f5;
+      --muted: #a0aec0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg0);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--cyan);
+      color: #000;
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    .filter-btn.active {
+      background: rgba(110, 199, 255, 0.1);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .media-card {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--stroke);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .media-card:hover {
+      border-color: var(--cyan);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(110, 199, 255, 0.2);
+    }
+
+    .media-preview {
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      display: grid;
+      place-items: center;
+      font-size: 32px;
+    }
+
+    .media-info {
+      padding: 12px;
+    }
+
+    .media-name {
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <h1 class="title">📱 MeauxMedia</h1>
+    <div class="actions">
+      <button class="btn btn-primary">Add Media</button>
+      <button class="btn btn-primary">New Project</button>
+      <button class="btn btn-primary">Export</button>
+    </div>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">Images</button>
+    <button class="filter-btn">Videos</button>
+    <button class="filter-btn">Documents</button>
+    <button class="filter-btn">Projects</button>
+    <button class="filter-btn">Templates</button>
+  </div>
+
+  <div class="media-grid">
+    <div class="media-card">
+      <div class="media-preview">🖼️</div>
+      <div class="media-info">
+        <div class="media-name">Project Asset 1</div>
+      </div>
+    </div>
+    <div class="media-card">
+      <div class="media-preview">🎬</div>
+      <div class="media-info">
+        <div class="media-name">Video Content</div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeauxTeam • Collaboration Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050814;
+      --glass: rgba(10, 16, 34, 0.7);
+      --panel: rgba(255, 255, 255, 0.04);
+      --stroke: rgba(255, 255, 255, 0.08);
+      --cyan: #6ec7ff;
+      --teal: #4aecdc;
+      --mint: #39f0c8;
+      --text: #f0f2f5;
+      --muted: #a0aec0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 280px 1fr 400px;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      background: var(--glass);
+      border-right: 1px solid var(--stroke);
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .sidebar-title {
+      font-size: 20px;
+      font-weight: 900;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-item {
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background: var(--panel);
+      color: var(--cyan);
+    }
+
+    .main {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px;
+      border-bottom: 1px solid var(--stroke);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .tab {
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    .tab.active {
+      background: rgba(110, 199, 255, 0.1);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    .content {
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 16px;
+    }
+
+    .message {
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      max-width: 70%;
+    }
+
+    .message.sent {
+      background: rgba(110, 199, 255, 0.1);
+      border: 1px solid rgba(110, 199, 255, 0.2);
+      margin-left: auto;
+    }
+
+    .message.received {
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+    }
+
+    .message-input {
+      display: flex;
+      gap: 12px;
+    }
+
+    .input-field {
+      flex: 1;
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: var(--text);
+      outline: none;
+    }
+
+    .send-btn {
+      background: var(--cyan);
+      color: #000;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .kanban-board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      height: 100%;
+    }
+
+    .kanban-column {
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .column-header {
+      font-weight: 800;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .kanban-card {
+      background: var(--glass);
+      border: 1px solid var(--stroke);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .kanban-card:hover {
+      border-color: var(--cyan);
+      transform: translateY(-2px);
+    }
+
+    .right-panel {
+      background: var(--glass);
+      border-left: 1px solid var(--stroke);
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .panel-title {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      color: var(--cyan);
+    }
+
+    .user-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .user-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 8px;
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+    }
+
+    .user-name {
+      flex: 1;
+      font-weight: 600;
+    }
+
+    .user-status {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--mint);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="sidebar-title">👥 MeauxTeam</div>
+    <div class="nav-item active" data-view="chat">
+      💬 Group Chat
+    </div>
+    <div class="nav-item" data-view="kanban">
+      📋 Kanban Board
+    </div>
+    <div class="nav-item" data-view="video">
+      📹 FaceTime
+    </div>
+    <div class="nav-item" data-view="channels">
+      📢 Channels
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="header">
+      <div>
+        <h1 class="title">Team Collaboration</h1>
+        <div class="tabs">
+          <div class="tab active" data-tab="chat">Chat</div>
+          <div class="tab" data-tab="kanban">Kanban</div>
+          <div class="tab" data-tab="video">Video</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div id="chat-view" class="view active">
+        <div class="chat-container">
+          <div class="messages">
+            <div class="message received">
+              <strong>Alex:</strong> Hey team! Ready for the sprint review?
+            </div>
+            <div class="message sent">
+              <strong>You:</strong> Yes! Just finishing up the final touches.
+            </div>
+            <div class="message received">
+              <strong>Sarah:</strong> Great! I'll share my screen in a minute.
+            </div>
+          </div>
+          <div class="message-input">
+            <input type="text" class="input-field" placeholder="Type a message...">
+            <button class="send-btn">Send</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="kanban-view" class="view" style="display: none;">
+        <div class="kanban-board">
+          <div class="kanban-column">
+            <div class="column-header">To Do</div>
+            <div class="kanban-card">
+              <div style="font-weight: 700; margin-bottom: 4px;">Design Review</div>
+              <div style="font-size: 12px; color: var(--muted);">Due: Today</div>
+            </div>
+          </div>
+          <div class="kanban-column">
+            <div class="column-header">In Progress</div>
+            <div class="kanban-card">
+              <div style="font-weight: 700; margin-bottom: 4px;">API Integration</div>
+              <div style="font-size: 12px; color: var(--muted);">Assigned: Alex</div>
+            </div>
+          </div>
+          <div class="kanban-column">
+            <div class="column-header">Review</div>
+            <div class="kanban-card">
+              <div style="font-weight: 700; margin-bottom: 4px;">Testing</div>
+              <div style="font-size: 12px; color: var(--muted);">Assigned: Sarah</div>
+            </div>
+          </div>
+          <div class="kanban-column">
+            <div class="column-header">Done</div>
+            <div class="kanban-card">
+              <div style="font-weight: 700; margin-bottom: 4px;">Deployment</div>
+              <div style="font-size: 12px; color: var(--muted);">Completed: Yesterday</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="video-view" class="view" style="display: none;">
+        <div style="text-align: center; padding: 40px;">
+          <div style="font-size: 48px; margin-bottom: 16px;">📹</div>
+          <h2 style="margin-bottom: 8px;">FaceTime / Video Call</h2>
+          <p style="color: var(--muted); margin-bottom: 24px;">Start or join a video call with your team</p>
+          <button
+            style="background: var(--cyan); color: #000; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 700; cursor: pointer;">
+            Start Call
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <div class="panel-title">Online Team</div>
+    <div class="user-list">
+      <div class="user-item">
+        <div class="user-avatar">A</div>
+        <div class="user-name">Alex</div>
+        <div class="user-status"></div>
+      </div>
+      <div class="user-item">
+        <div class="user-avatar">S</div>
+        <div class="user-name">Sarah</div>
+        <div class="user-status"></div>
+      </div>
+      <div class="user-item">
+        <div class="user-avatar">J</div>
+        <div class="user-name">Jordan</div>
+        <div class="user-status"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
+        tab.classList.add('active');
+        const viewId = tab.dataset.tab + '-view';
+        document.getElementById(viewId).style.display = 'block';
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeauxCAD • Design Tools</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg0: #02040a;
+      --glass: rgba(10, 16, 34, 0.65);
+      --panel: rgba(255, 255, 255, 0.03);
+      --stroke: rgba(255, 255, 255, 0.08);
+      --cyan: #6ec7ff;
+      --teal: #4aecdc;
+      --text: #f0f2f5;
+      --muted: #a0aec0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg0);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .header {
+      margin-bottom: 40px;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: 900;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: var(--muted);
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .tool-card {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      padding: 24px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tool-card:hover {
+      border-color: var(--cyan);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(110, 199, 255, 0.2);
+    }
+
+    .tool-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .tool-name {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .tool-desc {
+      font-size: 14px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <h1 class="title">🏗️ MeauxCAD</h1>
+    <p class="subtitle">Design and CAD tools for your projects</p>
+  </div>
+  <div class="tools-grid">
+    <div class="tool-card">
+      <div class="tool-icon">📐</div>
+      <div class="tool-name">2D Design</div>
+      <div class="tool-desc">Create 2D designs and schematics</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">🎨</div>
+      <div class="tool-name">3D Modeling</div>
+      <div class="tool-desc">Build 3D models and renderings</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">🔧</div>
+      <div class="tool-name">Blueprint Editor</div>
+      <div class="tool-desc">Edit and annotate blueprints</div>
+    </div>
+  </div>
+</body>
+
+</html>
