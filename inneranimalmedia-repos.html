@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Repositories - Inner Animal Media</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar">
+        <div class="sidebar-header">
+            <img src="https://meauxbility.org/assets/images/logo/meauxbility-logo-avatar.png" alt="Inner Animal Media"
+                class="sidebar-logo">
+            <span class="sidebar-title">INNER ANIMAL MEDIA</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="/" class="nav-item">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span class="nav-text">Home</span>
+            </a>
+
+            <a href="/dashboard" class="nav-item">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                </svg>
+                <span class="nav-text">Dashboard</span>
+            </a>
+
+            <a href="/projects" class="nav-item">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                </svg>
+                <span class="nav-text">Projects</span>
+            </a>
+
+            <div class="nav-section-title">INFRASTRUCTURE</div>
+
+            <a href="/api/workers" target="_blank" class="nav-item">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                <span class="nav-text">Workers</span>
+            </a>
+
+            <a href="/api/github/repos" class="nav-item active">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                </svg>
+                <span class="nav-text">Repositories</span>
+                <span class="nav-badge" id="reposCount">—</span>
+            </a>
+
+            <a href="/api/health" target="_blank" class="nav-item">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="nav-text">Health</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="mainContent">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="breadcrumb">
+                <span class="breadcrumb-item">Home</span>
+                <svg class="breadcrumb-separator" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <span class="breadcrumb-item active">Repositories</span>
+            </div>
+
+            <div class="top-bar-actions">
+                <div class="search-box">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Search repositories..." class="search-input"
+                        oninput="filterRepos()">
+                </div>
+
+                <button class="icon-button" onclick="refreshData()" title="Refresh">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                </button>
+
+                <div class="view-toggle">
+                    <button class="view-btn active" onclick="switchView('grid')" data-view="grid">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
+                        </svg>
+                        Grid
+                    </button>
+                    <button class="view-btn" onclick="switchView('list')" data-view="list">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                        </svg>
+                        List
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Repos Content -->
+        <div class="repos-content">
+            <div class="repos-header">
+                <div>
+                    <h1 class="page-title">GitHub Repositories</h1>
+                    <p class="page-subtitle"><span id="totalReposCount">0</span> repositories from InnerAnimal</p>
+                </div>
+            </div>
+
+            <!-- Grid View -->
+            <div id="gridView" class="view-content">
+                <div class="repos-grid" id="reposGrid">
+                    <div class="loading-state">
+                        <div class="loading-spinner"></div>
+                        <p>Loading repositories...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List View -->
+            <div id="listView" class="view-content" style="display: none;">
+                <div class="section-card">
+                    <div class="repos-table">
+                        <div class="table-header">
+                            <div class="table-cell">Repository</div>
+                            <div class="table-cell">Language</div>
+                            <div class="table-cell">Visibility</div>
+                            <div class="table-cell">Updated</div>
+                            <div class="table-cell">Actions</div>
+                        </div>
+                        <div id="reposTableBody">
+                            <div class="loading-state">
+                                <div class="loading-spinner"></div>
+                                <p>Loading repositories...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --primary-hover: #0284c7;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #8b5cf6;
+            --sidebar-width: 240px;
+            --top-bar-height: 72px;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --sidebar-bg: #ffffff;
+            --card-bg: #ffffff;
+        }
+
+        [data-theme="galaxy"] {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f3a;
+            --bg-tertiary: #1e2538;
+            --text-primary: #e5e7eb;
+            --text-secondary: #c4b5fd;
+            --text-muted: #94a3b8;
+            --border: rgba(139, 92, 246, 0.2);
+            --shadow: rgba(139, 92, 246, 0.4);
+            --sidebar-bg: rgba(15, 20, 25, 0.95);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --primary: #8b5cf6;
+            --primary-hover: #7c3aed;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="galaxy"] body {
+            background: linear-gradient(135deg, #0f1419 0%, #1a1f3a 50%, #0d1520 100%);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 48px;
+            color: var(--text-muted);
+        }
+
+        /* Sidebar */
+        #sidebar {
+            width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+            backdrop-filter: blur(40px);
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .sidebar-nav {
+            padding: 16px 12px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            padding: 16px 12px 8px 12px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+            margin-bottom: 2px;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+            stroke-width: 2;
+        }
+
+        .nav-text {
+            flex: 1;
+        }
+
+        .nav-badge {
+            background: var(--danger);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        /* Main Content */
+        #mainContent {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+        }
+
+        .top-bar {
+            height: var(--top-bar-height);
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(40px);
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb-item {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .breadcrumb-item.active {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .breadcrumb-separator {
+            width: 16px;
+            height: 16px;
+            color: var(--text-muted);
+            stroke-width: 2;
+        }
+
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            color: var(--text-muted);
+            stroke-width: 2;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 12px 10px 40px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        .icon-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .icon-button svg {
+            width: 20px;
+            height: 20px;
+            stroke-width: 2;
+        }
+
+        .icon-button:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .view-toggle {
+            display: flex;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .view-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .view-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke-width: 2;
+        }
+
+        .view-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .view-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Repos Content */
+        .repos-content {
+            padding: 32px;
+        }
+
+        .repos-header {
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        /* Grid View */
+        .repos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .repo-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .repo-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .repo-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .repo-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .repo-card-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .repo-card-description {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 16px;
+            min-height: 40px;
+        }
+
+        .repo-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .repo-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .repo-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .visibility-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .visibility-public {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .visibility-private {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+
+        .language-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            background: rgba(14, 165, 233, 0.1);
+            color: #0ea5e9;
+        }
+
+        /* List View */
+        .section-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .repos-table {
+            width: 100%;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 120px;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 2px solid var(--border);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 120px;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .table-row:hover {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+
+        .table-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .repo-name-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .repo-name-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .repo-name-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .icon-button-sm {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .icon-button-sm svg {
+            width: 16px;
+            height: 16px;
+            stroke-width: 2;
+        }
+
+        .icon-button-sm:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 64px 24px;
+            color: var(--text-muted);
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            #sidebar {
+                transform: translateX(-100%);
+            }
+
+            #mainContent {
+                margin-left: 0;
+            }
+
+            .repos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-header,
+            .table-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+        }
+    </style>
+
+    <script>
+        let allRepos = [];
+        let currentView = 'grid';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadRepos();
+        });
+
+        async function loadRepos() {
+            try {
+                const response = await fetch('/api/github/repos');
+                const data = await response.json();
+
+                if (data.success && data.repos) {
+                    allRepos = data.repos;
+                    document.getElementById('reposCount').textContent = allRepos.length;
+                    document.getElementById('totalReposCount').textContent = allRepos.length;
+                    renderRepos();
+                } else {
+                    showError(data.error || 'Failed to load repositories');
+                }
+            } catch (error) {
+                console.error('Error loading repos:', error);
+                showError('Failed to load repositories');
+            }
+        }
+
+        function renderRepos() {
+            const filtered = filterRepos();
+
+            if (currentView === 'grid') {
+                renderGridView(filtered);
+            } else {
+                renderListView(filtered);
+            }
+        }
+
+        function renderGridView(repos) {
+            const grid = document.getElementById('reposGrid');
+
+            if (repos.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                        </svg>
+                        <p>No repositories found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = repos.map(repo => {
+                const initials = repo.name.substring(0, 2).toUpperCase();
+                const gradient = getGradientForRepo(repo.name);
+                const updated = new Date(repo.updated_at).toLocaleDateString();
+                const language = repo.language || 'N/A';
+                const visibility = repo.private ? 'private' : 'public';
+
+                return `
+                    <div class="repo-card" onclick="window.open('${repo.html_url}', '_blank')">
+                        <div class="repo-icon" style="background: ${gradient};">${initials}</div>
+                        <div class="repo-card-title">
+                            ${repo.name}
+                            ${repo.archived ? '<span style="font-size: 10px; color: var(--warning);">(Archived)</span>' : ''}
+                        </div>
+                        <div class="repo-card-description">${repo.description || 'No description'}</div>
+                        <div class="repo-card-footer">
+                            <div class="repo-meta">
+                                <div class="repo-meta-item">
+                                    <span class="language-badge">${language}</span>
+                                </div>
+                                <div class="repo-meta-item">
+                                    <span class="visibility-badge visibility-${visibility}">${visibility}</span>
+                                </div>
+                            </div>
+                            <div style="font-size: 11px; color: var(--text-muted);">${updated}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderListView(repos) {
+            const tbody = document.getElementById('reposTableBody');
+
+            if (repos.length === 0) {
+                tbody.innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                        </svg>
+                        <p>No repositories found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = repos.map(repo => {
+                const initials = repo.name.substring(0, 2).toUpperCase();
+                const gradient = getGradientForRepo(repo.name);
+                const updated = new Date(repo.updated_at).toLocaleDateString();
+                const language = repo.language || 'N/A';
+                const visibility = repo.private ? 'private' : 'public';
+
+                return `
+                    <div class="table-row">
+                        <div class="table-cell">
+                            <div class="repo-name-cell">
+                                <div class="repo-icon" style="background: ${gradient}; width: 32px; height: 32px; font-size: 12px;">${initials}</div>
+                                <div>
+                                    <div class="repo-name-title">${repo.name}</div>
+                                    <div class="repo-name-subtitle">${repo.description || 'No description'}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-cell">
+                            <span class="language-badge">${language}</span>
+                        </div>
+                        <div class="table-cell">
+                            <span class="visibility-badge visibility-${visibility}">${visibility}</span>
+                        </div>
+                        <div class="table-cell">
+                            <span style="font-size: 13px; color: var(--text-muted);">${updated}</span>
+                        </div>
+                        <div class="table-cell">
+                            <button class="icon-button-sm" onclick="event.stopPropagation(); window.open('${repo.html_url}', '_blank')" title="Open">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterRepos() {
+            const search = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            return allRepos.filter(r =>
+                r.name.toLowerCase().includes(search) ||
+                (r.description || '').toLowerCase().includes(search) ||
+                (r.full_name || '').toLowerCase().includes(search) ||
+                (r.language || '').toLowerCase().includes(search)
+            );
+        }
+
+        function getGradientForRepo(name) {
+            const colors = [
+                'linear-gradient(135deg, #0ea5e9, #3b82f6)',
+                'linear-gradient(135deg, #10b981, #34d399)',
+                'linear-gradient(135deg, #8b5cf6, #a78bfa)',
+                'linear-gradient(135deg, #f59e0b, #fbbf24)',
+                'linear-gradient(135deg, #ef4444, #f87171)',
+                'linear-gradient(135deg, #06b6d4, #22d3ee)'
+            ];
+            const index = name.charCodeAt(0) % colors.length;
+            return colors[index];
+        }
+
+        function switchView(view) {
+            currentView = view;
+            document.getElementById('gridView').style.display = view === 'grid' ? 'block' : 'none';
+            document.getElementById('listView').style.display = view === 'list' ? 'block' : 'none';
+
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.view === view);
+            });
+
+            renderRepos();
+        }
+
+        function refreshData() {
+            loadRepos();
+        }
+
+        function showError(message) {
+            const grid = document.getElementById('reposGrid');
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+
+</html>

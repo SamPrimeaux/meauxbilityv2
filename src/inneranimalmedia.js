@@ -43,6 +43,9 @@ export default {
     } else if (path === "/agents" || path === "/agents/") {
       // Serve agents page
       r2Key = "inneranimalmedia-agents.html";
+    } else if (path === "/repos" || path === "/repos/") {
+      // Serve repos page
+      r2Key = "inneranimalmedia-repos.html";
     } else if (path.startsWith("/")) {
       r2Key = path.substring(1);
       // URL decode the path
@@ -114,6 +117,31 @@ async function handleAPI(path, request, env, corsHeaders) {
   };
 
   if (path === "/api/github/repos") {
+    // Check if this is a browser request (Accept header contains text/html)
+    const acceptHeader = request.headers.get("Accept") || "";
+    const isBrowserRequest = acceptHeader.includes("text/html");
+
+    if (isBrowserRequest) {
+      // Serve styled HTML page
+      try {
+        const htmlPage = await env.R2_WEBSITE.get("inneranimalmedia-repos.html");
+        if (htmlPage) {
+          const htmlBody = await htmlPage.text();
+          return new Response(htmlBody, {
+            headers: {
+              ...corsHeaders,
+              ...securityHeaders,
+              "Content-Type": "text/html;charset=UTF-8",
+              "Cache-Control": "public, max-age=3600",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error serving repos HTML:", error);
+      }
+    }
+
+    // Otherwise return JSON API response
     const response = await getGitHubRepos(env, corsHeaders);
     return new Response(response.body, {
       status: response.status,
