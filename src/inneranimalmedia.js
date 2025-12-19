@@ -46,6 +46,9 @@ export default {
     } else if (path === "/repos" || path === "/repos/") {
       // Serve repos page
       r2Key = "inneranimalmedia-repos.html";
+    } else if (path === "/workers" || path === "/workers/") {
+      // Serve workers page
+      r2Key = "inneranimalmedia-workers.html";
     } else if (path.startsWith("/")) {
       r2Key = path.substring(1);
       // URL decode the path
@@ -153,6 +156,31 @@ async function handleAPI(path, request, env, corsHeaders) {
   }
 
   if (path === "/api/workers") {
+    // Check if this is a browser request (Accept header contains text/html)
+    const acceptHeader = request.headers.get("Accept") || "";
+    const isBrowserRequest = acceptHeader.includes("text/html");
+    
+    if (isBrowserRequest) {
+      // Serve styled HTML page
+      try {
+        const htmlPage = await env.R2_WEBSITE.get("inneranimalmedia-workers.html");
+        if (htmlPage) {
+          const htmlBody = await htmlPage.text();
+          return new Response(htmlBody, {
+            headers: {
+              ...corsHeaders,
+              ...securityHeaders,
+              "Content-Type": "text/html;charset=UTF-8",
+              "Cache-Control": "public, max-age=3600",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error serving workers HTML:", error);
+      }
+    }
+    
+    // Otherwise return JSON API response
     const response = await getWorkers(env, corsHeaders);
     return new Response(response.body, {
       status: response.status,
@@ -185,7 +213,7 @@ async function getGitHubRepos(env, corsHeaders) {
 
     // Clean token - remove any whitespace
     const cleanToken = githubToken.trim().replace(/\s+/g, '');
-    
+
     // Try with Bearer first (for fine-grained tokens)
     let response = await fetch("https://api.github.com/user/repos?per_page=100&sort=updated&affiliation=owner", {
       headers: {
@@ -215,9 +243,9 @@ async function getGitHubRepos(env, corsHeaders) {
       } catch (e) {
         errorData = { message: errorText };
       }
-      
+
       let errorMsg = `GitHub API Error (${response.status}): ${errorData.message || errorText}`;
-      
+
       // More specific error messages
       if (response.status === 401) {
         errorMsg = `Authentication failed. Token may need 'repo' scope. Error: ${errorData.message || 'Check token permissions'}`;

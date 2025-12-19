@@ -94,6 +94,15 @@ jobs:
               --remote && echo "✅ Repos page uploaded" || echo "⚠️ Repos page upload failed"
           fi
           
+          # Upload workers page
+          if [ -f "inneranimalmedia-workers.html" ]; then
+            echo "📄 Uploading workers page to R2..."
+            wrangler r2 object put inneranimalmedia/inneranimalmedia-workers.html \
+              --file=inneranimalmedia-workers.html \
+              --content-type="text/html;charset=UTF-8" \
+              --remote && echo "✅ Workers page uploaded" || echo "⚠️ Workers page upload failed"
+          fi
+          
           # Upload dashboard page
           if [ -f "inneranimalmedia-dashboard.html" ]; then
             echo "📄 Uploading dashboard page to R2..."
