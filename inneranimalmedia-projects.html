@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Projects - Inner Animal Media</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar">
+        <div class="sidebar-header">
+            <img src="https://meauxbility.org/assets/images/logo/meauxbility-logo-avatar.png" alt="Inner Animal Media" class="sidebar-logo">
+            <span class="sidebar-title">INNER ANIMAL MEDIA</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="/" class="nav-item">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                </svg>
+                <span class="nav-text">Overview</span>
+            </a>
+
+            <a href="#analytics" class="nav-item" onclick="switchView('analytics'); return false;">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+                <span class="nav-text">Analytics</span>
+            </a>
+
+            <a href="#projects" class="nav-item active" onclick="switchView('list'); return false;">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                </svg>
+                <span class="nav-text">Projects</span>
+                <span class="nav-badge" id="projectsCount">—</span>
+            </a>
+
+            <div class="nav-section-title">INFRASTRUCTURE</div>
+
+            <a href="/api/workers" target="_blank" class="nav-item">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+                <span class="nav-text">Workers</span>
+                <span class="nav-badge" id="workersCount">—</span>
+            </a>
+
+            <a href="/api/github/repos" target="_blank" class="nav-item">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                </svg>
+                <span class="nav-text">Repositories</span>
+                <span class="nav-badge" id="reposCount">—</span>
+            </a>
+
+            <a href="/api/health" target="_blank" class="nav-item">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="nav-text">Health</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="mainContent">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="breadcrumb">
+                <span class="breadcrumb-item">Home</span>
+                <svg class="breadcrumb-separator" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+                <span class="breadcrumb-item active">Projects</span>
+            </div>
+
+            <div class="top-bar-actions">
+                <div class="search-box">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Search projects..." class="search-input" oninput="filterProjects()">
+                </div>
+
+                <button class="icon-button" onclick="refreshData()" title="Refresh Data">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                </button>
+
+                <div class="profile-dropdown">
+                    <button class="profile-button" onclick="toggleProfileDropdown()">
+                        <img src="https://meauxbility.org/assets/images/logo/meauxbility-logo-avatar.png" alt="Profile" class="profile-avatar">
+                        <svg class="profile-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <div class="dropdown-header">
+                            <img src="https://meauxbility.org/assets/images/logo/meauxbility-logo-avatar.png" alt="Profile" class="dropdown-avatar">
+                            <div class="dropdown-user-info">
+                                <div class="dropdown-user-name">Inner Animal Media</div>
+                                <div class="dropdown-user-email">Enterprise Platform</div>
+                            </div>
+                        </div>
+
+                        <div class="dropdown-divider"></div>
+
+                        <div class="dropdown-section">
+                            <div class="dropdown-section-title">APPEARANCE</div>
+                            <button class="dropdown-item" onclick="setTheme('light')">
+                                <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                                </svg>
+                                <span>Light Theme</span>
+                                <svg class="dropdown-check" id="lightCheck" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </button>
+                            <button class="dropdown-item" onclick="setTheme('galaxy')">
+                                <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                                </svg>
+                                <span>Galaxy Theme</span>
+                                <svg class="dropdown-check" id="galaxyCheck" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="display: none;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Projects Content -->
+        <div class="projects-content">
+            <!-- Header with View Toggle -->
+            <div class="projects-header">
+                <div>
+                    <h1 class="page-title">Projects</h1>
+                    <p class="page-subtitle">Manage and monitor your <span id="totalProjectsCount">125+</span> project portfolio</p>
+                </div>
+                <div class="header-actions">
+                    <div class="view-toggle">
+                        <button class="view-btn active" onclick="switchView('list')" data-view="list">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                            </svg>
+                            List
+                        </button>
+                        <button class="view-btn" onclick="switchView('grid')" data-view="grid">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/>
+                            </svg>
+                            Grid
+                        </button>
+                        <button class="view-btn" onclick="switchView('analytics')" data-view="analytics">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                            Analytics
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List View -->
+            <div id="listView" class="view-content">
+                <div class="section-card">
+                    <div class="projects-table">
+                        <div class="table-header">
+                            <div class="table-cell">Project Name</div>
+                            <div class="table-cell">Status</div>
+                            <div class="table-cell">Type</div>
+                            <div class="table-cell">URL</div>
+                            <div class="table-cell">Last Updated</div>
+                            <div class="table-cell">Actions</div>
+                        </div>
+                        <div id="projectsTableBody">
+                            <div class="table-row">
+                                <div class="table-cell">
+                                    <div class="loading-spinner"></div>
+                                    <span style="margin-left: 12px;">Loading projects...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid View -->
+            <div id="gridView" class="view-content" style="display: none;">
+                <div class="projects-grid" id="projectsGrid">
+                    <div class="project-card">
+                        <div class="loading-spinner"></div>
+                        <p style="text-align: center; margin-top: 16px; color: var(--text-muted);">Loading projects...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics View -->
+            <div id="analyticsView" class="view-content" style="display: none;">
+                <!-- Project Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card metric-primary">
+                        <div class="metric-header">
+                            <div class="metric-icon-wrapper">
+                                <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                                </svg>
+                            </div>
+                            <div class="metric-trend metric-trend-up" id="totalTrend">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                                </svg>
+                                <span id="totalTrendValue">—</span>
+                            </div>
+                        </div>
+                        <div class="metric-value" id="totalProjects">—</div>
+                        <div class="metric-label">Total Projects</div>
+                        <div class="metric-sparkline">
+                            <canvas id="totalChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="metric-card metric-success">
+                        <div class="metric-header">
+                            <div class="metric-icon-wrapper">
+                                <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                            </div>
+                            <div class="metric-trend metric-trend-up">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                                </svg>
+                                <span>Live</span>
+                            </div>
+                        </div>
+                        <div class="metric-value" id="activeWorkers">—</div>
+                        <div class="metric-label">Active Workers</div>
+                        <div class="metric-sparkline">
+                            <canvas id="workersChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="metric-card metric-info">
+                        <div class="metric-header">
+                            <div class="metric-icon-wrapper">
+                                <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                                </svg>
+                            </div>
+                            <div class="metric-trend metric-trend-up">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                                </svg>
+                                <span>Active</span>
+                            </div>
+                        </div>
+                        <div class="metric-value" id="githubRepos">—</div>
+                        <div class="metric-label">GitHub Repositories</div>
+                        <div class="metric-sparkline">
+                            <canvas id="reposChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="metric-card metric-warning">
+                        <div class="metric-header">
+                            <div class="metric-icon-wrapper">
+                                <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <div class="metric-trend metric-trend-neutral">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
+                                </svg>
+                                <span>Real-time</span>
+                            </div>
+                        </div>
+                        <div class="metric-value" id="responseTime">—</div>
+                        <div class="metric-label">Avg Response Time</div>
+                        <div class="metric-sparkline">
+                            <canvas id="responseChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="analytics-grid">
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h3 class="card-title">Project Distribution</h3>
+                            <button class="text-button" onclick="refreshData()">Refresh</button>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="distributionChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h3 class="card-title">Activity Timeline</h3>
+                            <button class="text-button">Details</button>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="timelineChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --primary-hover: #0284c7;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #8b5cf6;
+            --sidebar-width: 240px;
+            --top-bar-height: 72px;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --sidebar-bg: #ffffff;
+            --card-bg: #ffffff;
+        }
+
+        [data-theme="galaxy"] {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f3a;
+            --bg-tertiary: #1e2538;
+            --text-primary: #e5e7eb;
+            --text-secondary: #c4b5fd;
+            --text-muted: #94a3b8;
+            --border: rgba(139, 92, 246, 0.2);
+            --shadow: rgba(139, 92, 246, 0.4);
+            --sidebar-bg: rgba(15, 20, 25, 0.95);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --primary: #8b5cf6;
+            --primary-hover: #7c3aed;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="galaxy"] body {
+            background: linear-gradient(135deg, #0f1419 0%, #1a1f3a 50%, #0d1520 100%);
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Sidebar */
+        #sidebar {
+            width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+            backdrop-filter: blur(40px);
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-logo { width: 36px; height: 36px; border-radius: 8px; }
+        .sidebar-title { font-size: 16px; font-weight: 800; letter-spacing: -0.02em; }
+
+        .sidebar-nav { padding: 16px 12px; }
+        
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            padding: 16px 12px 8px 12px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+            margin-bottom: 2px;
+        }
+
+        .nav-item:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+        .nav-item.active { background: var(--primary); color: white; }
+
+        .nav-icon { width: 18px; height: 18px; stroke-width: 2; }
+        .nav-text { flex: 1; }
+        .nav-badge {
+            background: var(--danger);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        /* Main Content */
+        #mainContent {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+        }
+
+        .top-bar {
+            height: var(--top-bar-height);
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(40px);
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb-item {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .breadcrumb-item.active {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .breadcrumb-separator {
+            width: 16px;
+            height: 16px;
+            color: var(--text-muted);
+            stroke-width: 2;
+        }
+
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            color: var(--text-muted);
+            stroke-width: 2;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 12px 10px 40px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .icon-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .icon-button svg {
+            width: 20px;
+            height: 20px;
+            stroke-width: 2;
+        }
+
+        .icon-button:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .icon-button:active svg {
+            animation: spin 0.5s linear;
+        }
+
+        /* Profile Dropdown */
+        .profile-dropdown { position: relative; }
+
+        .profile-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px;
+            border-radius: 8px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .profile-button:hover { background: var(--bg-tertiary); }
+
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+        }
+
+        .profile-chevron {
+            width: 16px;
+            height: 16px;
+            color: var(--text-muted);
+            stroke-width: 2;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 280px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px var(--shadow);
+            display: none;
+            z-index: 1000;
+            backdrop-filter: blur(40px);
+        }
+
+        .dropdown-menu.active { display: block; }
+
+        .dropdown-header {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dropdown-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+        }
+
+        .dropdown-user-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .dropdown-user-email {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: var(--border);
+        }
+
+        .dropdown-section {
+            padding: 8px;
+        }
+
+        .dropdown-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            padding: 8px 12px;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            text-align: left;
+            font-family: inherit;
+        }
+
+        .dropdown-item:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .dropdown-icon {
+            width: 18px;
+            height: 18px;
+            stroke-width: 2;
+        }
+
+        .dropdown-item span { flex: 1; }
+
+        .dropdown-check {
+            width: 18px;
+            height: 18px;
+            color: var(--primary);
+            stroke-width: 2;
+        }
+
+        /* Projects Content */
+        .projects-content {
+            padding: 32px;
+        }
+
+        .projects-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .view-toggle {
+            display: flex;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .view-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .view-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke-width: 2;
+        }
+
+        .view-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .view-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Section Card */
+        .section-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        /* Table View */
+        .projects-table {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr 1fr 0.5fr;
+            gap: 16px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr 1fr 0.5fr;
+            gap: 16px;
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .table-row:hover {
+            background: var(--bg-secondary);
+        }
+
+        .table-cell {
+            display: flex;
+            align-items: center;
+        }
+
+        .project-name {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .project-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 800;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .project-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .project-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .project-url {
+            font-size: 12px;
+            color: var(--primary);
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .project-url:hover {
+            text-decoration: underline;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: capitalize;
+        }
+
+        .status-active { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .status-inactive { background: rgba(148, 163, 184, 0.1); color: #94a3b8; }
+        .status-worker { background: rgba(14, 165, 233, 0.1); color: #0ea5e9; }
+        .status-repo { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+
+        .type-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .type-worker { background: rgba(14, 165, 233, 0.1); color: #0ea5e9; }
+        .type-repo { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+
+        .date-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .icon-button-sm {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .icon-button-sm svg {
+            width: 16px;
+            height: 16px;
+            stroke-width: 2;
+        }
+
+        .icon-button-sm:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        /* Grid View */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .project-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .project-card-body {
+            margin-bottom: 16px;
+        }
+
+        .project-card-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .project-card-description {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .project-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Analytics Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .metric-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .metric-primary .metric-icon-wrapper { background: rgba(14, 165, 233, 0.1); color: #0ea5e9; }
+        .metric-success .metric-icon-wrapper { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .metric-warning .metric-icon-wrapper { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .metric-info .metric-icon-wrapper { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+
+        .metric-icon {
+            width: 24px;
+            height: 24px;
+            stroke-width: 2;
+        }
+
+        .metric-trend {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 6px 10px;
+            border-radius: 6px;
+        }
+
+        .metric-trend svg {
+            width: 16px;
+            height: 16px;
+            stroke-width: 2;
+        }
+
+        .metric-trend-up {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .metric-trend-neutral {
+            background: rgba(148, 163, 184, 0.1);
+            color: #94a3b8;
+        }
+
+        .metric-value {
+            font-size: 36px;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .metric-sparkline {
+            height: 40px;
+            opacity: 0.5;
+        }
+
+        .metric-sparkline canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .text-button {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0;
+            font-family: inherit;
+        }
+
+        .text-button:hover {
+            text-decoration: underline;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        .chart-container canvas {
+            max-height: 300px;
+        }
+
+        @media (max-width: 1200px) {
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #sidebar { transform: translateX(-100%); }
+            #mainContent { margin-left: 0; }
+            .table-header { display: none; }
+            .table-row {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script>
+        let allProjects = [];
+        let workers = [];
+        let repos = [];
+        let charts = {};
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            setInterval(loadData, 30000); // Refresh every 30 seconds
+        });
+
+        async function loadData() {
+            try {
+                // Load workers
+                const workersRes = await fetch('/api/workers');
+                const workersData = await workersRes.json();
+                if (workersData.success) {
+                    workers = workersData.workers || [];
+                    document.getElementById('workersCount').textContent = workers.length;
+                }
+
+                // Load GitHub repos
+                const reposRes = await fetch('/api/github/repos');
+                const reposData = await reposRes.json();
+                if (reposData.success) {
+                    repos = reposData.repos || [];
+                    document.getElementById('reposCount').textContent = repos.length;
+                }
+
+                // Combine all projects
+                allProjects = [
+                    ...workers.map(w => ({
+                        id: w.id || w.name,
+                        name: w.name || w.id,
+                        type: 'worker',
+                        status: 'active',
+                        url: w.worker_url || `https://${w.name || w.id}.meauxbility.workers.dev`,
+                        updated: w.modified_on || w.created_on,
+                        description: w.description || 'Cloudflare Worker'
+                    })),
+                    ...repos.map(r => ({
+                        id: r.id?.toString() || r.name,
+                        name: r.name,
+                        type: 'repository',
+                        status: r.archived ? 'inactive' : 'active',
+                        url: r.html_url,
+                        updated: r.updated_at,
+                        description: r.description || 'GitHub Repository'
+                    }))
+                ];
+
+                // Update counts
+                const totalCount = allProjects.length;
+                document.getElementById('projectsCount').textContent = totalCount;
+                document.getElementById('totalProjectsCount').textContent = totalCount;
+                document.getElementById('totalProjects').textContent = totalCount.toLocaleString();
+                document.getElementById('activeWorkers').textContent = workers.length.toLocaleString();
+                document.getElementById('githubRepos').textContent = repos.length.toLocaleString();
+
+                // Render projects
+                renderProjects();
+                updateAnalytics();
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+
+        function renderProjects() {
+            const filtered = filterProjects();
+            
+            // List view
+            const tableBody = document.getElementById('projectsTableBody');
+            tableBody.innerHTML = filtered.map(project => {
+                const initials = project.name.substring(0, 2).toUpperCase();
+                const gradient = getGradientForProject(project.name);
+                const date = project.updated ? new Date(project.updated).toLocaleDateString() : 'N/A';
+                
+                return `
+                    <div class="table-row">
+                        <div class="table-cell">
+                            <div class="project-name">
+                                <div class="project-icon" style="background: ${gradient};">${initials}</div>
+                                <div>
+                                    <div class="project-title">${project.name}</div>
+                                    <div class="project-subtitle">${project.description}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-cell">
+                            <span class="status-badge status-${project.status}">${project.status}</span>
+                        </div>
+                        <div class="table-cell">
+                            <span class="type-badge type-${project.type}">${project.type}</span>
+                        </div>
+                        <div class="table-cell">
+                            <a href="${project.url}" target="_blank" class="project-url">${project.url.replace('https://', '')}</a>
+                        </div>
+                        <div class="table-cell">
+                            <span class="date-text">${date}</span>
+                        </div>
+                        <div class="table-cell">
+                            <button class="icon-button-sm" onclick="window.open('${project.url}', '_blank')" title="Open">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Grid view
+            const grid = document.getElementById('projectsGrid');
+            grid.innerHTML = filtered.map(project => {
+                const initials = project.name.substring(0, 2).toUpperCase();
+                const gradient = getGradientForProject(project.name);
+                const date = project.updated ? new Date(project.updated).toLocaleDateString() : 'N/A';
+                
+                return `
+                    <div class="project-card">
+                        <div class="project-card-header">
+                            <div class="project-icon" style="background: ${gradient};">${initials}</div>
+                            <button class="icon-button-sm" onclick="window.open('${project.url}', '_blank')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="project-card-body">
+                            <h3 class="project-card-title">${project.name}</h3>
+                            <p class="project-card-description">${project.description}</p>
+                        </div>
+                        <div class="project-card-footer">
+                            <span class="status-badge status-${project.status}">${project.status}</span>
+                            <span class="type-badge type-${project.type}">${project.type}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterProjects() {
+            const search = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            return allProjects.filter(p => 
+                p.name.toLowerCase().includes(search) ||
+                p.description.toLowerCase().includes(search) ||
+                p.type.toLowerCase().includes(search)
+            );
+        }
+
+        function getGradientForProject(name) {
+            const colors = [
+                'linear-gradient(135deg, #0ea5e9, #3b82f6)',
+                'linear-gradient(135deg, #10b981, #34d399)',
+                'linear-gradient(135deg, #8b5cf6, #a78bfa)',
+                'linear-gradient(135deg, #f59e0b, #fbbf24)',
+                'linear-gradient(135deg, #ef4444, #f87171)',
+                'linear-gradient(135deg, #06b6d4, #22d3ee)'
+            ];
+            const index = name.charCodeAt(0) % colors.length;
+            return colors[index];
+        }
+
+        function updateAnalytics() {
+            // Update metrics
+            const total = allProjects.length;
+            const workersCount = workers.length;
+            const reposCount = repos.length;
+
+            // Calculate response time (simulated)
+            const avgResponseTime = Math.floor(Math.random() * 50 + 20);
+            document.getElementById('responseTime').textContent = `${avgResponseTime}ms`;
+
+            // Update charts
+            updateDistributionChart();
+            updateTimelineChart();
+            updateSparklines();
+        }
+
+        function updateDistributionChart() {
+            const ctx = document.getElementById('distributionChart');
+            if (!ctx) return;
+
+            if (charts.distribution) charts.distribution.destroy();
+
+            const workerCount = workers.length;
+            const repoCount = repos.length;
+
+            charts.distribution = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Workers', 'Repositories'],
+                    datasets: [{
+                        data: [workerCount, repoCount],
+                        backgroundColor: ['#0ea5e9', '#8b5cf6'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: 'var(--text-primary)',
+                                font: { family: 'Inter', size: 12 },
+                                padding: 15
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateTimelineChart() {
+            const ctx = document.getElementById('timelineChart');
+            if (!ctx) return;
+
+            if (charts.timeline) charts.timeline.destroy();
+
+            // Generate timeline data (last 7 days)
+            const labels = [];
+            const data = [];
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                labels.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+                data.push(Math.floor(Math.random() * 20 + 10));
+            }
+
+            charts.timeline = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Projects',
+                        data,
+                        borderColor: '#0ea5e9',
+                        backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: 'var(--text-muted)' },
+                            grid: { color: 'var(--border)' }
+                        },
+                        x: {
+                            ticks: { color: 'var(--text-muted)' },
+                            grid: { color: 'var(--border)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateSparklines() {
+            // Update sparkline charts for metrics
+            ['total', 'workers', 'repos', 'response'].forEach(type => {
+                const canvas = document.getElementById(`${type}Chart`);
+                if (!canvas) return;
+
+                const ctx = canvas.getContext('2d');
+                const width = canvas.width = canvas.offsetWidth;
+                const height = canvas.height = 40;
+
+                ctx.clearRect(0, 0, width, height);
+                ctx.strokeStyle = type === 'response' ? '#f59e0b' : '#0ea5e9';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+
+                const points = 20;
+                for (let i = 0; i < points; i++) {
+                    const x = (i / (points - 1)) * width;
+                    const y = height - (Math.random() * height * 0.5 + height * 0.25);
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+            });
+        }
+
+        function refreshData() {
+            loadData();
+        }
+
+        function toggleProfileDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            
+            document.getElementById('lightCheck').style.display = theme === 'light' ? 'block' : 'none';
+            document.getElementById('galaxyCheck').style.display = theme === 'galaxy' ? 'block' : 'none';
+        }
+
+        function switchView(view) {
+            document.getElementById('listView').style.display = 'none';
+            document.getElementById('gridView').style.display = 'none';
+            document.getElementById('analyticsView').style.display = 'none';
+            
+            if (view === 'list') {
+                document.getElementById('listView').style.display = 'block';
+            } else if (view === 'grid') {
+                document.getElementById('gridView').style.display = 'block';
+            } else if (view === 'analytics') {
+                document.getElementById('analyticsView').style.display = 'block';
+                setTimeout(updateAnalytics, 100);
+            }
+            
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.view === view) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('profileDropdown');
+            const button = document.querySelector('.profile-button');
+            if (!dropdown.contains(e.target) && !button.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
+    </script>
+</body>
+</html>

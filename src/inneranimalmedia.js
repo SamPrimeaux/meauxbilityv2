@@ -34,11 +34,17 @@ export default {
     if (path === "/" || path === "") {
       // Serve the public-facing design page as index
       r2Key = "inner-animal-media-public-facing-design (1).html";
+    } else if (path === "/projects" || path === "/projects/") {
+      // Serve projects page
+      r2Key = "inneranimalmedia-projects.html";
     } else if (path.startsWith("/")) {
       r2Key = path.substring(1);
       // URL decode the path
       r2Key = decodeURIComponent(r2Key);
-      if (!r2Key.includes(".")) {
+      // Handle /projects route
+      if (r2Key === "projects") {
+        r2Key = "inneranimalmedia-projects.html";
+      } else if (!r2Key.includes(".")) {
         r2Key += ".html";
       }
     } else {

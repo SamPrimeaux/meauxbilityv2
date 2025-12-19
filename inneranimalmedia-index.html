@@ -198,6 +198,7 @@
                 <div class="api-endpoint">GET /api/github/repos</div>
             </div>
             <div style="margin-top: 1.5rem;">
+                <a href="/projects" class="btn">View All Projects</a>
                 <a href="/api/workers" class="btn" target="_blank">Test Workers API</a>
                 <a href="/api/github/repos" class="btn" target="_blank">Test GitHub API</a>
             </div>
@@ -217,22 +218,32 @@
                 // Load workers count
                 const workersRes = await fetch('/api/workers');
                 const workersData = await workersRes.json();
+                let workersCount = 0;
                 if (workersData.success) {
-                    document.getElementById('worker-count').textContent = workersData.count || 0;
+                    workersCount = workersData.count || 0;
+                    document.getElementById('worker-count').textContent = workersCount;
                 }
 
                 // Load GitHub repos count
                 const githubRes = await fetch('/api/github/repos');
                 const githubData = await githubRes.json();
+                let reposCount = 0;
                 if (githubData.success) {
-                    document.getElementById('github-count').textContent = githubData.count || 0;
+                    reposCount = githubData.count || 0;
+                    document.getElementById('github-count').textContent = reposCount;
                 }
+
+                // Calculate total projects
+                const totalProjects = workersCount + reposCount;
+                document.getElementById('project-count').textContent = totalProjects > 0 ? totalProjects : '—';
             } catch (error) {
                 console.error('Failed to load stats:', error);
             }
         }
 
         loadStats();
+        // Auto-refresh every 30 seconds
+        setInterval(loadStats, 30000);
     </script>
 </body>
 

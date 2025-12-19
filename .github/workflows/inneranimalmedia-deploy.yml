@@ -58,6 +58,15 @@ jobs:
             echo "⚠️ Warning: inneranimalmedia-index.html not found - index page may not work"
           fi
           
+          # Upload projects page
+          if [ -f "inneranimalmedia-projects.html" ]; then
+            echo "📄 Uploading projects page to R2..."
+            wrangler r2 object put inneranimalmedia/inneranimalmedia-projects.html \
+              --file=inneranimalmedia-projects.html \
+              --content-type="text/html;charset=UTF-8" \
+              --remote && echo "✅ Projects page uploaded" || echo "⚠️ Projects page upload failed"
+          fi
+          
           # Upload dashboard and module pages
           echo "📦 Uploading dashboard and module pages..."
           for file in MEAUXGLOBE.html meaux-team.html meaux-doc.html meaux-photo.html meaux-memories.html meaux-media.html meaux-cloud.html meaux-cad.html meaux-learn.html; do
