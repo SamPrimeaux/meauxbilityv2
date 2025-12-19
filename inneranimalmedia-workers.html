@@ -1448,6 +1448,23 @@
             <span class="nav-text">Settings</span>
           </a>
         </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Theme</div>
+          <button class="nav-item" onclick="setTheme('dark')" id="themeDark" style="width: 100%; text-align: left; border: none; background: none; font-family: inherit; cursor: pointer;">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+            <span class="nav-text">Dark</span>
+          </button>
+          <button class="nav-item" onclick="setTheme('galaxy')" id="themeGalaxy" style="width: 100%; text-align: left; border: none; background: none; font-family: inherit; cursor: pointer;">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+              <circle cx="12" cy="12" r="4" />
+            </svg>
+            <span class="nav-text">Galaxy</span>
+          </button>
+        </div>
       </div>
     </nav>
 
@@ -1884,12 +1901,32 @@
       sidenav.classList.toggle('collapsed');
     });
 
+    // Theme Management
+    function setTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      
+      // Update active state
+      document.querySelectorAll('[id^="theme"]').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      const activeBtn = document.getElementById(`theme${theme.charAt(0).toUpperCase() + theme.slice(1)}`);
+      if (activeBtn) activeBtn.classList.add('active');
+    }
+
+    function loadTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      setTheme(savedTheme);
+    }
+
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
+      loadTheme();
       loadWorkers();
     });
 
     if (document.readyState !== 'loading') {
+      loadTheme();
       loadWorkers();
     }
   </script>
