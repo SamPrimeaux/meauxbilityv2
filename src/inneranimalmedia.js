@@ -32,11 +32,14 @@ export default {
     let r2Key;
 
     if (path === "/" || path === "") {
-      // Serve the public-facing design page as index
-      r2Key = "inner-animal-media-public-facing-design (1).html";
+      // Serve the new index page with galaxy design
+      r2Key = "inneranimalmedia-index.html";
     } else if (path === "/projects" || path === "/projects/") {
       // Serve projects page
       r2Key = "inneranimalmedia-projects.html";
+    } else if (path === "/agents" || path === "/agents/") {
+      // Serve agents page
+      r2Key = "inneranimalmedia-agents.html";
     } else if (path.startsWith("/")) {
       r2Key = path.substring(1);
       // URL decode the path
@@ -57,6 +60,7 @@ export default {
       if (!object) {
         // Try alternative key formats
         const alternatives = [
+          "inneranimalmedia-index.html",
           "inner-animal-media-public-facing-design (1).html",
           "inner-animal-media-public-facing-design%20(1).html",
           "index.html"
