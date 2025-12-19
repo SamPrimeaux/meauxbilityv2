@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -244,7 +245,7 @@
       z-index: 0;
     }
 
-    .sidenav.collapsed + .main-content {
+    .sidenav.collapsed+.main-content {
       margin-left: var(--nav-collapsed);
     }
 
@@ -253,12 +254,10 @@
       position: sticky;
       top: 0;
       z-index: 90;
-      background: linear-gradient(
-          to bottom,
+      background: linear-gradient(to bottom,
           rgba(2, 3, 10, 0.96),
           rgba(2, 3, 10, 0.92),
-          rgba(2, 3, 10, 0.88)
-        );
+          rgba(2, 3, 10, 0.88));
       backdrop-filter: blur(26px);
       border-bottom: 1px solid var(--border);
       padding: 16px 20px;
@@ -460,10 +459,13 @@
     }
 
     @keyframes atmosphere-rotate {
-      0%, 100% {
+
+      0%,
+      100% {
         transform: scale(1) rotate(0deg);
         opacity: 0.7;
       }
+
       50% {
         transform: scale(1.05) rotate(180deg);
         opacity: 1;
@@ -504,9 +506,12 @@
     }
 
     @keyframes ocean-shimmer {
-      0%, 100% {
+
+      0%,
+      100% {
         opacity: 0.75;
       }
+
       50% {
         opacity: 0.95;
       }
@@ -528,6 +533,7 @@
       from {
         transform: rotateY(0deg);
       }
+
       to {
         transform: rotateY(360deg);
       }
@@ -552,9 +558,12 @@
     }
 
     @keyframes twinkle-cities {
-      0%, 100% {
+
+      0%,
+      100% {
         opacity: 0.45;
       }
+
       50% {
         opacity: 0.8;
       }
@@ -578,6 +587,7 @@
       from {
         transform: translateX(0);
       }
+
       to {
         transform: translateX(-10%);
       }
@@ -601,6 +611,7 @@
       from {
         transform: rotateY(0deg);
       }
+
       to {
         transform: rotateY(360deg);
       }
@@ -637,6 +648,7 @@
       from {
         transform: rotateZ(0deg);
       }
+
       to {
         transform: rotateZ(360deg);
       }
@@ -673,10 +685,13 @@
     }
 
     @keyframes pulse-satellite {
-      0%, 100% {
+
+      0%,
+      100% {
         transform: scale(1);
         opacity: 0.6;
       }
+
       50% {
         transform: scale(1.4);
         opacity: 1;
@@ -772,6 +787,7 @@
       0% {
         transform: rotate(0deg);
       }
+
       100% {
         transform: rotate(360deg);
       }
@@ -955,6 +971,7 @@
       from {
         opacity: 0;
       }
+
       to {
         opacity: 1;
       }
@@ -982,6 +999,7 @@
         opacity: 0;
         transform: translateY(16px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -1189,6 +1207,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="app-container">
     <!-- Sidenav -->
@@ -1197,15 +1216,15 @@
         <a href="/" class="logo">
           <div class="logo-icon">
             <svg viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-              <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+              <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
             </svg>
           </div>
           <span class="logo-text">MeauxAccess</span>
         </a>
         <button class="nav-toggle" id="navToggle">
           <svg viewBox="0 0 24 24" fill="none">
-            <path d="M3 12h18M3 6h18M3 18h18"/>
+            <path d="M3 12h18M3 6h18M3 18h18" />
           </svg>
         </button>
       </div>
@@ -1215,25 +1234,28 @@
           <div class="nav-section-title">Core Modules</div>
           <a href="/dashboard" class="nav-item">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
-              <path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+              <path
+                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
             </svg>
             <span class="nav-text">Dashboard</span>
           </a>
           <a href="/api/workers" class="nav-item active">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
-              <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              <path d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
             <span class="nav-text">MeauxWork</span>
           </a>
           <a href="/projects" class="nav-item">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
-              <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              <path
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
             <span class="nav-text">MeauxStats</span>
           </a>
           <a href="/agents" class="nav-item">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
-              <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+              <path
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
             <span class="nav-text">MeauxTeam</span>
           </a>
@@ -1243,25 +1265,28 @@
           <div class="nav-section-title">Content & Media</div>
           <a href="#meauxdoc" class="nav-item">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
-              <path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+              <path
+                d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
             </svg>
             <span class="nav-text">MeauxDOC</span>
           </a>
           <a href="#meauxphoto" class="nav-item">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
-              <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              <path
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
             <span class="nav-text">MeauxPHOTO</span>
           </a>
           <a href="#meauxmemories" class="nav-item">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
-              <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              <path
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
             <span class="nav-text">MeauxMemories</span>
           </a>
           <a href="#meauxmedia" class="nav-item">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
-              <path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+              <path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
             </svg>
             <span class="nav-text">MeauxMedia</span>
           </a>
@@ -1271,13 +1296,13 @@
           <div class="nav-section-title">Infrastructure</div>
           <a href="#meauxcloud" class="nav-item">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
-              <path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+              <path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
             </svg>
             <span class="nav-text">MeauxCloud</span>
           </a>
           <a href="#meauxcad" class="nav-item">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none">
-              <path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+              <path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
             </svg>
             <span class="nav-text">MeauxCAD</span>
           </a>
@@ -1294,11 +1319,11 @@
             <h1 class="page-title">MeauxWork</h1>
             <div class="stats-row">
               <div class="stat">
-                <div class="stat-value" id="totalModules">—</div>
+                <div class="stat-value" id="totalModules">0</div>
                 <div class="stat-label">Workers</div>
               </div>
               <div class="stat">
-                <div class="stat-value" id="activeModules">—</div>
+                <div class="stat-value" id="activeModules">0</div>
                 <div class="stat-label">Active</div>
               </div>
             </div>
@@ -1336,26 +1361,24 @@
 
               <div class="grid-layer">
                 <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="200" cy="200" rx="200" ry="48" fill="none"
-                    stroke="rgba(0, 212, 255, 0.14)" stroke-width="0.7" />
-                  <ellipse cx="200" cy="200" rx="200" ry="90" fill="none"
-                    stroke="rgba(0, 212, 255, 0.12)" stroke-width="0.6" />
-                  <ellipse cx="200" cy="200" rx="200" ry="132" fill="none"
-                    stroke="rgba(0, 212, 255, 0.12)" stroke-width="0.6" />
-                  <ellipse cx="200" cy="200" rx="200" ry="172" fill="none"
-                    stroke="rgba(0, 212, 255, 0.1)" stroke-width="0.5" />
-                  <line x1="0" y1="200" x2="400" y2="200"
-                    stroke="rgba(0, 212, 255, 0.24)" stroke-width="0.7" />
-                  <ellipse cx="200" cy="200" rx="48" ry="200" fill="none"
-                    stroke="rgba(0, 212, 255, 0.12)" stroke-width="0.6" />
-                  <ellipse cx="200" cy="200" rx="88" ry="200" fill="none"
-                    stroke="rgba(0, 212, 255, 0.12)" stroke-width="0.6" />
-                  <ellipse cx="200" cy="200" rx="128" ry="200" fill="none"
-                    stroke="rgba(0, 212, 255, 0.12)" stroke-width="0.6" />
-                  <ellipse cx="200" cy="200" rx="168" ry="200" fill="none"
-                    stroke="rgba(0, 212, 255, 0.1)" stroke-width="0.5" />
-                  <line x1="200" y1="0" x2="200" y2="400"
-                    stroke="rgba(0, 212, 255, 0.24)" stroke-width="0.7" />
+                  <ellipse cx="200" cy="200" rx="200" ry="48" fill="none" stroke="rgba(0, 212, 255, 0.14)"
+                    stroke-width="0.7" />
+                  <ellipse cx="200" cy="200" rx="200" ry="90" fill="none" stroke="rgba(0, 212, 255, 0.12)"
+                    stroke-width="0.6" />
+                  <ellipse cx="200" cy="200" rx="200" ry="132" fill="none" stroke="rgba(0, 212, 255, 0.12)"
+                    stroke-width="0.6" />
+                  <ellipse cx="200" cy="200" rx="200" ry="172" fill="none" stroke="rgba(0, 212, 255, 0.1)"
+                    stroke-width="0.5" />
+                  <line x1="0" y1="200" x2="400" y2="200" stroke="rgba(0, 212, 255, 0.24)" stroke-width="0.7" />
+                  <ellipse cx="200" cy="200" rx="48" ry="200" fill="none" stroke="rgba(0, 212, 255, 0.12)"
+                    stroke-width="0.6" />
+                  <ellipse cx="200" cy="200" rx="88" ry="200" fill="none" stroke="rgba(0, 212, 255, 0.12)"
+                    stroke-width="0.6" />
+                  <ellipse cx="200" cy="200" rx="128" ry="200" fill="none" stroke="rgba(0, 212, 255, 0.12)"
+                    stroke-width="0.6" />
+                  <ellipse cx="200" cy="200" rx="168" ry="200" fill="none" stroke="rgba(0, 212, 255, 0.1)"
+                    stroke-width="0.5" />
+                  <line x1="200" y1="0" x2="200" y2="400" stroke="rgba(0, 212, 255, 0.24)" stroke-width="0.7" />
                 </svg>
               </div>
             </div>
@@ -1393,7 +1416,7 @@
         <h2 class="modal-title" id="modalTitle">Worker Details</h2>
         <button class="close-btn" onclick="closeModal()">
           <svg viewBox="0 0 24 24" fill="none">
-            <path d="M6 18L18 6M6 6l12 12"/>
+            <path d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
@@ -1423,7 +1446,7 @@
         'dev': '<svg viewBox="0 0 24 24" fill="none"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>',
         'default': '<svg viewBox="0 0 24 24" fill="none"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>'
       };
-      
+
       const lower = name.toLowerCase();
       if (lower.includes('dashboard')) return iconMap.dashboard;
       if (lower.includes('api') || lower.includes('gateway') || lower.includes('router')) return iconMap.api;
@@ -1452,27 +1475,35 @@
       try {
         const response = await fetch('/api/workers');
         const data = await response.json();
-        
+
         if (data.success && data.workers) {
           allWorkers = data.workers.map(w => ({
             id: w.id || w.name,
             name: w.name || w.id,
-            code: w.name.substring(0, 8).toUpperCase(),
+            code: (w.name || w.id).substring(0, 8).toUpperCase(),
             url: w.worker_url || `https://${w.name || w.id}.meauxbility.workers.dev`,
             created: w.created_on || '',
             modified: w.modified_on || '',
-            category: getCategory(w),
-            status: getBadgeType(w)
+            category: getCategory({ name: w.name || w.id }),
+            status: getBadgeType({ name: w.name || w.id })
           }));
-          
+
+          // Update stats immediately
           document.getElementById("totalModules").textContent = allWorkers.length;
+          document.getElementById("activeModules").textContent = allWorkers.length;
+          
+          // Filter and render
           filterWorkers(currentFilter, '');
         } else {
           showError(data.error || 'Failed to load workers');
+          document.getElementById("totalModules").textContent = "0";
+          document.getElementById("activeModules").textContent = "0";
         }
       } catch (error) {
         console.error('Error loading workers:', error);
         showError('Failed to load workers');
+        document.getElementById("totalModules").textContent = "0";
+        document.getElementById("activeModules").textContent = "0";
       }
     }
 
@@ -1739,4 +1770,5 @@
     }
   </script>
 </body>
+
 </html>
