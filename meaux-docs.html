@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeauxDocs • Galaxy Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050814;
+      --glass: rgba(10, 16, 34, 0.7);
+      --panel: rgba(255, 255, 255, 0.04);
+      --stroke: rgba(255, 255, 255, 0.1);
+      --cyan: #6ec7ff;
+      --mint: #39f0c8;
+      --text: #f0f2f5;
+      --muted: #a0aec0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; display: grid; grid-template-columns: 280px 1fr; height: 100vh; overflow: hidden; }
+
+    .toc { background: rgba(0,0,0,0.2); border-right: 1px solid var(--stroke); padding: 32px 20px; overflow-y: auto; }
+    .toc-title { font-weight: 800; font-size: 14px; text-transform: uppercase; color: var(--muted); letter-spacing: 1.5px; margin-bottom: 24px; }
+    .toc-item { padding: 10px 12px; border-radius: 8px; cursor: pointer; color: var(--muted); font-size: 14px; margin-bottom: 4px; transition: 0.2s; }
+    .toc-item:hover { background: var(--panel); color: var(--text); }
+    .toc-item.active { background: var(--panel); color: var(--cyan); border: 1px solid rgba(110, 199, 255, 0.2); }
+
+    .content { background: var(--glass); backdrop-filter: blur(20px); overflow-y: auto; padding: 60px 80px; line-height: 1.7; }
+    .doc-title { font-size: 48px; font-weight: 900; letter-spacing: -2px; margin-bottom: 24px; background: linear-gradient(to right, #fff, var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .doc-lead { font-size: 18px; color: var(--muted); margin-bottom: 40px; }
+    
+    h2 { font-size: 24px; font-weight: 800; margin: 48px 0 16px; color: var(--cyan); }
+    p { margin-bottom: 20px; color: var(--text); }
+    
+    .code-block { background: #000; border: 1px solid var(--stroke); border-radius: 12px; padding: 20px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--mint); margin: 24px 0; position: relative; }
+    .code-label { position: absolute; top: -10px; right: 20px; background: var(--bg); padding: 2px 8px; border: 1px solid var(--stroke); border-radius: 6px; font-size: 10px; color: var(--muted); }
+
+    .note { background: rgba(110, 199, 255, 0.05); border-left: 4px solid var(--cyan); padding: 20px; border-radius: 0 12px 12px 0; margin: 32px 0; }
+  </style>
+</head>
+<body>
+  <div class="toc">
+    <div class="toc-title">Documentation</div>
+    <div class="toc-item active">Introduction</div>
+    <div class="toc-item">Architecture</div>
+    <div class="toc-item">Deployment Guide</div>
+    <div class="toc-item">R2 Asset Rules</div>
+    <div class="toc-item">D1 Schema Polish</div>
+    <div class="toc-item">AutoRAG Tuning</div>
+    <div style="margin-top: 40px;" class="toc-title">Resources</div>
+    <div class="toc-item">Brand Guidelines</div>
+    <div class="toc-item">API Reference</div>
+  </div>
+  <div class="content">
+    <h1 class="doc-title">Introduction</h1>
+    <p class="doc-lead">Welcome to the MeauxAccess Documentation. This hub provides everything you need to build, deploy, and manage Fortune 500-quality applications on the MeauxStack.</p>
+    
+    <h2>The Galaxy Architecture</h2>
+    <p>The Galaxy architecture is built for speed, resilience, and elegance. By leveraging Cloudflare Workers, Durable Objects, and R2 storage, we eliminate the traditional bottlenecks of server management and database scaling.</p>
+    
+    <div class="code-block">
+      <div class="code-label">wrangler.jsonc</div>
+      {
+  "name": "meauxaccess-mvp",
+  "main": "src/index.js",
+  "compatibility_date": "2024-11-24",
+  "r2_buckets": [
+    { "binding": "R2_STORAGE", "bucket_name": "assets" }
+  ]
+}
+    </div>
+
+    <h2>Core Principles</h2>
+    <p>Our methodology focuses on "Zero-Ops" development. We don't manage servers; we deploy logic. We don't build silos; we connect services.</p>
+    
+    <div class="note">
+      <strong>Pro Tip:</strong> Always use the Universal Tool (Cmd+/) to quickly jump between development contexts.
+    </div>
+
+    <h2>R2 Storage Best Practices</h2>
+    <p>Assets should be versioned and served via the `/assets/` path. This ensures proper caching headers and edge-side performance optimization.</p>
+  </div>
+</body>
+</html>

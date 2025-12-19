@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeauxBoard • Kanban Galaxy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050814;
+      --glass: rgba(10, 16, 34, 0.7);
+      --panel: rgba(255, 255, 255, 0.04);
+      --stroke: rgba(255, 255, 255, 0.08);
+      --cyan: #6ec7ff;
+      --mint: #39f0c8;
+      --violet: #b79bff;
+      --orange: #ff6b35;
+      --text: #f0f2f5;
+      --muted: #a0aec0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; padding: 24px; }
+
+    .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+    .title { font-size: 28px; font-weight: 900; letter-spacing: -1px; background: linear-gradient(to right, var(--cyan), var(--mint)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; align-items: flex-start; }
+    .column { background: rgba(255,255,255,0.02); border: 1px solid var(--stroke); border-radius: 16px; padding: 16px; min-height: 500px; display: flex; flex-direction: column; gap: 12px; }
+    .column-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; padding: 0 4px; }
+    .column-title { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+    .column-count { font-size: 12px; background: var(--panel); padding: 2px 8px; border-radius: 99px; border: 1px solid var(--stroke); }
+
+    .task-card { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--stroke); border-radius: 12px; padding: 16px; cursor: pointer; transition: 0.2s; position: relative; }
+    .task-card:hover { border-color: var(--cyan); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+    .task-tag { font-size: 10px; font-weight: 800; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; margin-bottom: 12px; display: inline-block; }
+    .tag-dev { background: rgba(110, 199, 255, 0.1); color: var(--cyan); }
+    .tag-design { background: rgba(183, 155, 255, 0.1); color: var(--violet); }
+    .tag-ops { background: rgba(255, 107, 53, 0.1); color: var(--orange); }
+    
+    .task-title { font-weight: 700; font-size: 14px; margin-bottom: 8px; line-height: 1.4; }
+    .task-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; }
+    .avatar-stack { display: flex; }
+    .avatar { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--bg); background: var(--panel); margin-left: -8px; }
+    .avatar:first-child { margin-left: 0; }
+    .priority { width: 8px; height: 8px; border-radius: 50%; }
+
+    .btn-add { background: var(--panel); border: 1px dashed var(--stroke); color: var(--muted); padding: 12px; border-radius: 10px; cursor: pointer; text-align: center; font-size: 13px; font-weight: 600; transition: 0.2s; }
+    .btn-add:hover { background: var(--panel-hover); border-color: var(--muted); color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1 class="title">MeauxBoard</h1>
+    <button style="background: var(--cyan); color: #000; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 800; cursor: pointer;">New Project</button>
+  </div>
+
+  <div class="board">
+    <div class="column">
+      <div class="column-header">
+        <span class="column-title">Backlog</span>
+        <span class="column-count">3</span>
+      </div>
+      <div class="task-card">
+        <span class="task-tag tag-dev">Backend</span>
+        <div class="task-title">Implement Webhook verification for R2 events</div>
+        <div class="task-meta">
+          <div class="avatar-stack"><div class="avatar"></div><div class="avatar"></div></div>
+          <div class="priority" style="background: var(--orange)"></div>
+        </div>
+      </div>
+      <div class="btn-add">+ Add Task</div>
+    </div>
+
+    <div class="column">
+      <div class="column-header">
+        <span class="column-title">In Progress</span>
+        <span class="column-count">2</span>
+      </div>
+      <div class="task-card" style="border-left: 3px solid var(--cyan)">
+        <span class="task-tag tag-design">UI/UX</span>
+        <div class="task-title">Galaxy Theme Remastering - Phase 2</div>
+        <div class="task-meta">
+          <div class="avatar-stack"><div class="avatar"></div></div>
+          <div class="priority" style="background: var(--cyan)"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="column">
+      <div class="column-header">
+        <span class="column-title">Testing</span>
+        <span class="column-count">1</span>
+      </div>
+      <div class="task-card">
+        <span class="task-tag tag-ops">Infra</span>
+        <div class="task-title">Database migration to meaux-work-db</div>
+        <div class="task-meta">
+          <div class="avatar-stack"><div class="avatar"></div></div>
+          <div class="priority" style="background: var(--mint)"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="column">
+      <div class="column-header">
+        <span class="column-title">Done</span>
+        <span class="column-count">12</span>
+      </div>
+      <div class="task-card" style="opacity: 0.6;">
+        <span class="task-tag tag-dev">Backend</span>
+        <div class="task-title">Initial Worker Setup</div>
+        <div class="task-meta">
+          <div class="avatar-stack"><div class="avatar"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

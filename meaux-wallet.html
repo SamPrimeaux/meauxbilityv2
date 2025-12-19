@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeauxWallet • Galaxy Finance</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050814;
+      --glass: rgba(10, 16, 34, 0.7);
+      --panel: rgba(255, 255, 255, 0.04);
+      --stroke: rgba(255, 255, 255, 0.1);
+      --cyan: #6ec7ff;
+      --mint: #39f0c8;
+      --text: #f0f2f5;
+      --muted: #a0aec0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; padding: 40px; }
+
+    .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
+    .title { font-size: 28px; font-weight: 900; background: linear-gradient(to right, #fff, var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .balance-card { background: linear-gradient(135deg, rgba(110, 199, 255, 0.1), rgba(57, 240, 200, 0.1)), var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--stroke); border-radius: 24px; padding: 40px; margin-bottom: 32px; display: grid; grid-template-columns: 1fr 1fr; align-items: center; }
+    .balance-val { font-size: 48px; font-weight: 900; letter-spacing: -2px; }
+    .balance-label { font-size: 14px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+    .transaction-list { background: var(--glass); border: 1px solid var(--stroke); border-radius: 20px; overflow: hidden; }
+    .list-header { padding: 20px 24px; border-bottom: 1px solid var(--stroke); font-weight: 800; font-size: 16px; }
+    .transaction-item { padding: 16px 24px; display: grid; grid-template-columns: 48px 1fr 120px; align-items: center; border-bottom: 1px solid var(--stroke); transition: 0.2s; }
+    .transaction-item:hover { background: var(--panel); }
+    .tx-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--panel); display: grid; place-items: center; }
+    .tx-name { font-weight: 700; font-size: 14px; }
+    .tx-date { font-size: 12px; color: var(--muted); }
+    .tx-amount { text-align: right; font-weight: 800; font-size: 14px; }
+    .tx-positive { color: var(--mint); }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1 class="title">MeauxWallet</h1>
+    <button style="background: var(--cyan); color: #000; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 800; cursor: pointer;">Withdraw Funds</button>
+  </div>
+
+  <div class="balance-card">
+    <div>
+      <div class="balance-label">Total Balance</div>
+      <div class="balance-val">$12,450.00</div>
+    </div>
+    <div style="text-align: right;">
+      <div class="balance-label">Earnings (This Month)</div>
+      <div class="balance-val" style="color: var(--mint);">+$3,200.00</div>
+    </div>
+  </div>
+
+  <div class="transaction-list">
+    <div class="list-header">Recent Transactions</div>
+    <div class="transaction-item">
+      <div class="tx-icon">☁️</div>
+      <div>
+        <div class="tx-name">Cloudflare R2 Usage</div>
+        <div class="tx-date">Dec 12, 2025</div>
+      </div>
+      <div class="tx-amount">-$42.50</div>
+    </div>
+    <div class="transaction-item">
+      <div class="tx-icon" style="color: var(--mint);">💰</div>
+      <div>
+        <div class="tx-name">Project Payout: Galaxy Hub</div>
+        <div class="tx-date">Dec 10, 2025</div>
+      </div>
+      <div class="tx-amount tx-positive">+$2,500.00</div>
+    </div>
+    <div class="transaction-item">
+      <div class="tx-icon">⚡</div>
+      <div>
+        <div class="tx-name">API Gateway Credits</div>
+        <div class="tx-date">Dec 08, 2025</div>
+      </div>
+      <div class="tx-amount">-$15.00</div>
+    </div>
+  </div>
+</body>
+</html>

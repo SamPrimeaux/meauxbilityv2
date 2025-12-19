@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeauxPhoto • Galaxy Gallery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050814;
+      --glass: rgba(10, 16, 34, 0.7);
+      --panel: rgba(255, 255, 255, 0.04);
+      --stroke: rgba(255, 255, 255, 0.1);
+      --cyan: #6ec7ff;
+      --mint: #39f0c8;
+      --text: #f0f2f5;
+      --muted: #a0aec0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; padding: 24px; }
+
+    .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+    .title { font-size: 28px; font-weight: 900; letter-spacing: -1px; background: linear-gradient(to right, var(--cyan), var(--mint)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .gallery-actions { display: flex; gap: 12px; margin-bottom: 24px; }
+    .search-bar { flex: 1; background: var(--panel); border: 1px solid var(--stroke); border-radius: 12px; padding: 12px 20px; color: #fff; outline: none; }
+
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+    .photo-card { background: var(--glass); border: 1px solid var(--stroke); border-radius: 16px; overflow: hidden; cursor: pointer; transition: 0.3s; position: relative; }
+    .photo-card:hover { border-color: var(--cyan); transform: scale(1.02); }
+    .photo-preview { width: 100%; aspect-ratio: 1; background: #000; display: grid; place-items: center; }
+    .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-info { padding: 12px; background: rgba(0,0,0,0.4); }
+    .photo-name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .photo-meta { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+    .upload-zone { border: 2px dashed var(--stroke); border-radius: 20px; padding: 40px; text-align: center; color: var(--muted); cursor: pointer; transition: 0.2s; margin-bottom: 32px; }
+    .upload-zone:hover { border-color: var(--cyan); background: var(--panel); color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1 class="title">MeauxPhoto</h1>
+    <div style="display: flex; gap: 12px;">
+      <button style="background: var(--panel); color: var(--text); border: 1px solid var(--stroke); padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer;">Refresh</button>
+      <button style="background: var(--cyan); color: #000; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 800; cursor: pointer;">Upload Image</button>
+    </div>
+  </div>
+
+  <div class="upload-zone">
+    <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-bottom: 12px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+    <div style="font-weight: 700;">Drag and drop assets here</div>
+    <div style="font-size: 12px;">Supports PNG, WebP, SVG (Max 10MB)</div>
+  </div>
+
+  <div class="gallery-actions">
+    <input type="text" class="search-bar" placeholder="Search images by name or tag...">
+  </div>
+
+  <div class="gallery-grid">
+    <div class="photo-card">
+      <div class="photo-preview"><img src="https://imagedelivery.net/g7wf09fCONpnidkRnR_5vw/49029798-3a1d-41c0-bcf5-3164a155bc00/public" alt="Avatar"></div>
+      <div class="photo-info">
+        <div class="photo-name">galaxy-avatar-v1.png</div>
+        <div class="photo-meta">124 KB • 1024x1024</div>
+      </div>
+    </div>
+    <div class="photo-card">
+      <div class="photo-preview"><div style="color: var(--muted);">🖼️</div></div>
+      <div class="photo-info">
+        <div class="photo-name">nebula-background.webp</div>
+        <div class="photo-meta">2.4 MB • 3840x2160</div>
+      </div>
+    </div>
+    <!-- Repeat cards -->
+  </div>
+</body>
+</html>

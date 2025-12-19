@@ -1,0 +1,35 @@
+name: Deploy Meauxbility v2
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Deploy Worker
+        run: |
+          wrangler deploy --config wrangler.meauxv2.jsonc
+
+      - name: Verify Deployment
+        run: |
+          echo "✅ Worker deployed to: https://meauxv2.meauxbility.workers.dev"
+          echo "✅ R2 Public URL: https://pub-755243305fca4f6c84c44523f0772f06.r2.dev"

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeauxCalendar • Galaxy Schedule</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050814;
+      --glass: rgba(10, 16, 34, 0.7);
+      --panel: rgba(255, 255, 255, 0.04);
+      --stroke: rgba(255, 255, 255, 0.1);
+      --cyan: #6ec7ff;
+      --text: #f0f2f5;
+      --muted: #a0aec0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; display: grid; grid-template-columns: 300px 1fr; overflow: hidden; }
+
+    .sidebar { background: rgba(0,0,0,0.3); border-right: 1px solid var(--stroke); padding: 32px 24px; }
+    .sidebar-title { font-weight: 900; font-size: 20px; margin-bottom: 32px; color: var(--cyan); }
+    
+    .mini-cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; margin-bottom: 32px; }
+    .mini-cal-day { font-size: 10px; font-weight: 700; color: var(--muted); padding: 4px; }
+    .mini-cal-date { font-size: 11px; padding: 6px; border-radius: 6px; cursor: pointer; }
+    .mini-cal-date:hover { background: var(--panel); }
+    .mini-cal-date.active { background: var(--cyan); color: #000; font-weight: 800; }
+
+    .main { background: var(--glass); backdrop-filter: blur(20px); overflow-y: auto; display: flex; flex-direction: column; }
+    .header { padding: 24px 40px; border-bottom: 1px solid var(--stroke); display: flex; align-items: center; justify-content: space-between; }
+    .cal-grid { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: repeat(5, 1fr); gap: 1px; background: var(--stroke); }
+    .cal-cell { background: var(--bg); padding: 12px; transition: 0.2s; position: relative; }
+    .cal-cell:hover { background: var(--panel); }
+    .cal-date { font-size: 12px; font-weight: 700; margin-bottom: 8px; color: var(--muted); }
+    .cal-cell.today .cal-date { color: var(--cyan); }
+
+    .event { background: rgba(110, 199, 255, 0.1); border-left: 3px solid var(--cyan); border-radius: 4px; padding: 4px 8px; font-size: 11px; font-weight: 700; color: var(--text); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .event.meeting { border-color: var(--cyan); background: rgba(110, 199, 255, 0.1); }
+    .event.launch { border-color: #39f0c8; background: rgba(57, 240, 200, 0.1); }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-title">MeauxCalendar</div>
+    <div class="mini-cal">
+      <div class="mini-cal-day">S</div><div class="mini-cal-day">M</div><div class="mini-cal-day">T</div><div class="mini-cal-day">W</div><div class="mini-cal-day">T</div><div class="mini-cal-day">F</div><div class="mini-cal-day">S</div>
+      <!-- Dummy Dates -->
+      <div class="mini-cal-date">28</div><div class="mini-cal-date">29</div><div class="mini-cal-date">30</div><div class="mini-cal-date">31</div><div class="mini-cal-date">1</div><div class="mini-cal-date">2</div><div class="mini-cal-date">3</div>
+      <div class="mini-cal-date">4</div><div class="mini-cal-date">5</div><div class="mini-cal-date">6</div><div class="mini-cal-date">7</div><div class="mini-cal-date">8</div><div class="mini-cal-date">9</div><div class="mini-cal-date">10</div>
+      <div class="mini-cal-date">11</div><div class="mini-cal-date">12</div><div class="mini-cal-date active">13</div><div class="mini-cal-date">14</div><div class="mini-cal-date">15</div><div class="mini-cal-date">16</div><div class="mini-cal-date">17</div>
+    </div>
+
+    <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--muted); letter-spacing: 1px; margin-bottom: 16px;">Upcoming</div>
+    <div class="event meeting">Team Standup • 10:00 AM</div>
+    <div class="event launch">Galaxy Hub Launch • 2:00 PM</div>
+  </div>
+  <div class="main">
+    <div class="header">
+      <h2 style="font-weight: 800;">December 2025</h2>
+      <div style="display: flex; gap: 8px;">
+        <button style="background: var(--panel); border: 1px solid var(--stroke); color: #fff; padding: 6px 12px; border-radius: 6px; cursor: pointer;">Today</button>
+        <button style="background: var(--cyan); color: #000; border: none; padding: 6px 16px; border-radius: 6px; font-weight: 800; cursor: pointer;">+ Add Event</button>
+      </div>
+    </div>
+    <div class="cal-grid">
+      <!-- Row 1 -->
+      <div class="cal-cell"><div class="cal-date">1</div></div>
+      <div class="cal-cell"><div class="cal-date">2</div></div>
+      <div class="cal-cell"><div class="cal-date">3</div><div class="event meeting">Design Sync</div></div>
+      <div class="cal-cell"><div class="cal-date">4</div></div>
+      <div class="cal-cell"><div class="cal-date">5</div></div>
+      <div class="cal-cell"><div class="cal-date">6</div></div>
+      <div class="cal-cell"><div class="cal-date">7</div></div>
+      <!-- Row 2 -->
+      <div class="cal-cell"><div class="cal-date">8</div></div>
+      <div class="cal-cell"><div class="cal-date">9</div></div>
+      <div class="cal-cell"><div class="cal-date">10</div></div>
+      <div class="cal-cell"><div class="cal-date">11</div></div>
+      <div class="cal-cell"><div class="cal-date">12</div></div>
+      <div class="cal-cell today"><div class="cal-date">13</div><div class="event launch">Galaxy Hub Launch</div></div>
+      <div class="cal-cell"><div class="cal-date">14</div></div>
+      <!-- More rows... -->
+    </div>
+  </div>
+</body>
+</html>
