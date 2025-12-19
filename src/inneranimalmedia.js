@@ -34,6 +34,9 @@ export default {
     if (path === "/" || path === "") {
       // Serve the new index page with galaxy design
       r2Key = "inneranimalmedia-index.html";
+    } else if (path === "/dashboard" || path === "/dashboard/") {
+      // Serve dashboard page
+      r2Key = "inneranimalmedia-dashboard.html";
     } else if (path === "/projects" || path === "/projects/") {
       // Serve projects page
       r2Key = "inneranimalmedia-projects.html";

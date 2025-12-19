@@ -58,6 +58,15 @@ jobs:
             echo "⚠️ Warning: inneranimalmedia-index.html not found - index page may not work"
           fi
           
+          # Upload index page
+          if [ -f "inneranimalmedia-index.html" ]; then
+            echo "📄 Uploading index page to R2..."
+            wrangler r2 object put inneranimalmedia/inneranimalmedia-index.html \
+              --file=inneranimalmedia-index.html \
+              --content-type="text/html;charset=UTF-8" \
+              --remote && echo "✅ Index page uploaded" || echo "⚠️ Index page upload failed"
+          fi
+          
           # Upload projects page
           if [ -f "inneranimalmedia-projects.html" ]; then
             echo "📄 Uploading projects page to R2..."
@@ -65,6 +74,33 @@ jobs:
               --file=inneranimalmedia-projects.html \
               --content-type="text/html;charset=UTF-8" \
               --remote && echo "✅ Projects page uploaded" || echo "⚠️ Projects page upload failed"
+          fi
+          
+          # Upload agents page
+          if [ -f "inneranimalmedia-agents.html" ]; then
+            echo "📄 Uploading agents page to R2..."
+            wrangler r2 object put inneranimalmedia/inneranimalmedia-agents.html \
+              --file=inneranimalmedia-agents.html \
+              --content-type="text/html;charset=UTF-8" \
+              --remote && echo "✅ Agents page uploaded" || echo "⚠️ Agents page upload failed"
+          fi
+          
+          # Upload dashboard page
+          if [ -f "inneranimalmedia-dashboard.html" ]; then
+            echo "📄 Uploading dashboard page to R2..."
+            wrangler r2 object put inneranimalmedia/inneranimalmedia-dashboard.html \
+              --file=inneranimalmedia-dashboard.html \
+              --content-type="text/html;charset=UTF-8" \
+              --remote && echo "✅ Dashboard page uploaded" || echo "⚠️ Dashboard page upload failed"
+          fi
+          
+          # Upload shared navigation script (if needed)
+          if [ -f "shared-nav.js" ]; then
+            echo "📄 Uploading shared navigation script to R2..."
+            wrangler r2 object put inneranimalmedia/shared-nav.js \
+              --file=shared-nav.js \
+              --content-type="application/javascript;charset=UTF-8" \
+              --remote && echo "✅ Shared nav script uploaded" || echo "⚠️ Shared nav script upload failed"
           fi
           
           # Upload dashboard and module pages
