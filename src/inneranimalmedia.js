@@ -182,39 +182,52 @@ async function getGitHubRepos(env, corsHeaders) {
     if (!githubToken) {
       return jsonResponse({ success: true, repos: [], count: 0, message: "GitHub token not configured" }, 200, corsHeaders);
     }
+
+    // Clean token - remove any whitespace
+    const cleanToken = githubToken.trim().replace(/\s+/g, '');
     
-    // Try token as-is first
-    let response = await fetch("https://api.github.com/user/repos?per_page=100&sort=updated", {
+    // Try with Bearer first (for fine-grained tokens)
+    let response = await fetch("https://api.github.com/user/repos?per_page=100&sort=updated&affiliation=owner", {
       headers: {
-        "Authorization": `Bearer ${githubToken.trim()}`,
+        "Authorization": `Bearer ${cleanToken}`,
         "Accept": "application/vnd.github.v3+json",
-        "User-Agent": "InnerAnimalMedia-Dashboard"
+        "User-Agent": "InnerAnimalMedia-Dashboard",
+        "X-GitHub-Api-Version": "2022-11-28"
       }
     });
-    
-    // If Bearer fails, try token format
+
+    // If Bearer fails with 401, try token format (for classic tokens)
     if (!response.ok && response.status === 401) {
-      response = await fetch("https://api.github.com/user/repos?per_page=100&sort=updated", {
+      response = await fetch("https://api.github.com/user/repos?per_page=100&sort=updated&affiliation=owner", {
         headers: {
-          "Authorization": `token ${githubToken.trim()}`,
+          "Authorization": `token ${cleanToken}`,
           "Accept": "application/vnd.github.v3+json",
           "User-Agent": "InnerAnimalMedia-Dashboard"
         }
       });
     }
-    
+
     if (!response.ok) {
       const errorText = await response.text();
-      let errorMsg = `Failed to fetch GitHub repos: ${errorText}`;
-      
-      // Provide helpful error message
-      if (response.status === 401) {
-        errorMsg = "GitHub token is invalid or expired. Please update GITHUB_TOKEN secret in Cloudflare Dashboard with a valid token from https://github.com/settings/tokens";
+      let errorData;
+      try {
+        errorData = JSON.parse(errorText);
+      } catch (e) {
+        errorData = { message: errorText };
       }
       
-      return jsonResponse({ success: false, error: errorMsg }, response.status, corsHeaders);
+      let errorMsg = `GitHub API Error (${response.status}): ${errorData.message || errorText}`;
+      
+      // More specific error messages
+      if (response.status === 401) {
+        errorMsg = `Authentication failed. Token may need 'repo' scope. Error: ${errorData.message || 'Check token permissions'}`;
+      } else if (response.status === 403) {
+        errorMsg = `Token lacks required permissions. Ensure it has 'repo' scope. Error: ${errorData.message || 'Forbidden'}`;
+      }
+
+      return jsonResponse({ success: false, error: errorMsg, status: response.status }, response.status, corsHeaders);
     }
-    
+
     const repos = await response.json();
     const repoCount = Array.isArray(repos) ? repos.length : 0;
     return jsonResponse({ success: true, repos: repos || [], count: repoCount }, 200, corsHeaders);
