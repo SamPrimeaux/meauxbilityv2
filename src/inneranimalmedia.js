@@ -1,0 +1,181 @@
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    const path = url.pathname;
+
+    // CORS headers
+    const corsHeaders = {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+    };
+
+    if (request.method === "OPTIONS") {
+      return new Response(null, { headers: corsHeaders });
+    }
+
+    // API endpoints
+    if (path.startsWith("/api/")) {
+      return handleAPI(path, request, env, corsHeaders);
+    }
+
+    // Serve static files from R2
+    let r2Key;
+
+    if (path === "/" || path === "") {
+      // Serve the public-facing design page as index
+      r2Key = "inner-animal-media-public-facing-design (1).html";
+    } else if (path.startsWith("/")) {
+      r2Key = path.substring(1);
+      // URL decode the path
+      r2Key = decodeURIComponent(r2Key);
+      if (!r2Key.includes(".")) {
+        r2Key += ".html";
+      }
+    } else {
+      r2Key = path;
+    }
+
+    try {
+      let object = await env.R2_WEBSITE.get(r2Key);
+
+      if (!object) {
+        // Try alternative key formats
+        const alternatives = [
+          "inner-animal-media-public-facing-design (1).html",
+          "inner-animal-media-public-facing-design%20(1).html",
+          "index.html"
+        ];
+
+        for (const altKey of alternatives) {
+          object = await env.R2_WEBSITE.get(altKey);
+          if (object) {
+            r2Key = altKey;
+            break;
+          }
+        }
+      }
+
+      if (!object) {
+        return new Response(`Not Found. Tried: ${r2Key}`, {
+          status: 404,
+          headers: corsHeaders,
+        });
+      }
+
+      const contentType = getContentType(r2Key);
+      const body = await object.text();
+
+      return new Response(body, {
+        headers: {
+          ...corsHeaders,
+          "Content-Type": contentType,
+          "Cache-Control": "public, max-age=3600",
+        },
+      });
+    } catch (error) {
+      console.error(`Error serving ${r2Key}:`, error);
+      return new Response("Internal Server Error", {
+        status: 500,
+        headers: corsHeaders,
+      });
+    }
+  },
+};
+
+async function handleAPI(path, request, env, corsHeaders) {
+  if (path === "/api/github/repos") {
+    return getGitHubRepos(env, corsHeaders);
+  }
+
+  if (path === "/api/workers") {
+    return getWorkers(env, corsHeaders);
+  }
+
+  return new Response("Not Found", { status: 404, headers: corsHeaders });
+}
+
+async function getGitHubRepos(env, corsHeaders) {
+  try {
+    const githubToken = env.GITHUB_TOKEN;
+    if (!githubToken) {
+      return jsonResponse({ success: true, repos: [], count: 0, message: "GitHub token not configured" }, 200, corsHeaders);
+    }
+    const response = await fetch("https://api.github.com/user/repos?per_page=100&sort=updated", {
+      headers: {
+        "Authorization": `Bearer ${githubToken}`,
+        "Accept": "application/vnd.github.v3+json",
+        "User-Agent": "InnerAnimalMedia-Dashboard"
+      }
+    });
+    if (!response.ok) {
+      const errorText = await response.text();
+      return jsonResponse({ success: false, error: `Failed to fetch GitHub repos: ${errorText}` }, response.status, corsHeaders);
+    }
+    const repos = await response.json();
+    const repoCount = Array.isArray(repos) ? repos.length : 0;
+    return jsonResponse({ success: true, repos: repos || [], count: repoCount }, 200, corsHeaders);
+  } catch (error) {
+    return jsonResponse({ success: false, error: error.message || "Failed to fetch GitHub repositories" }, 500, corsHeaders);
+  }
+}
+
+async function getWorkers(env, corsHeaders) {
+  try {
+    if (!env.CLOUDFLARE_API_TOKEN || !env.CLOUDFLARE_ACCOUNT_ID) {
+      return jsonResponse({ success: false, error: "Cloudflare API credentials not configured" }, 503, corsHeaders);
+    }
+    const response = await fetch(
+      `https://api.cloudflare.com/client/v4/accounts/${env.CLOUDFLARE_ACCOUNT_ID}/workers/scripts?per_page=1000`,
+      {
+        headers: {
+          "Authorization": `Bearer ${env.CLOUDFLARE_API_TOKEN}`
+        }
+      }
+    );
+    if (!response.ok) {
+      const errorText = await response.text();
+      return jsonResponse({ success: false, error: `Failed to list workers: ${errorText}` }, response.status, corsHeaders);
+    }
+    const data = await response.json();
+    const workers = (data.result || []).map((w) => ({
+      id: w.id,
+      name: w.id,
+      created_on: w.created_on,
+      modified_on: w.modified_on,
+      worker_url: `https://${w.id}.meauxbility.workers.dev`,
+    }));
+    return jsonResponse({ success: true, workers: workers, count: workers.length }, 200, corsHeaders);
+  } catch (error) {
+    return jsonResponse({ success: false, error: error.message || "Failed to fetch workers" }, 500, corsHeaders);
+  }
+}
+
+function jsonResponse(data, status, corsHeaders) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" }
+  });
+}
+
+function getContentType(path) {
+  const ext = path.split(".").pop().toLowerCase();
+  const types = {
+    html: "text/html;charset=UTF-8",
+    css: "text/css",
+    js: "application/javascript",
+    json: "application/json",
+    png: "image/png",
+    jpg: "image/jpeg",
+    jpeg: "image/jpeg",
+    gif: "image/gif",
+    svg: "image/svg+xml",
+    webp: "image/webp",
+    ico: "image/x-icon",
+    woff: "font/woff",
+    woff2: "font/woff2",
+    ttf: "font/ttf",
+    eot: "application/vnd.ms-fontobject",
+  };
+  return types[ext] || "application/octet-stream";
+}
