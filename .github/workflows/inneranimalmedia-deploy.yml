@@ -103,6 +103,15 @@ jobs:
               --remote && echo "✅ Workers page uploaded" || echo "⚠️ Workers page upload failed"
           fi
           
+          # Upload settings page
+          if [ -f "inneranimalmedia-settings.html" ]; then
+            echo "📄 Uploading settings page to R2..."
+            wrangler r2 object put inneranimalmedia/inneranimalmedia-settings.html \
+              --file=inneranimalmedia-settings.html \
+              --content-type="text/html;charset=UTF-8" \
+              --remote && echo "✅ Settings page uploaded" || echo "⚠️ Settings page upload failed"
+          fi
+          
           # Upload dashboard page
           if [ -f "inneranimalmedia-dashboard.html" ]; then
             echo "📄 Uploading dashboard page to R2..."
@@ -123,7 +132,7 @@ jobs:
           
           # Upload dashboard and module pages
           echo "📦 Uploading dashboard and module pages..."
-          for file in MEAUXGLOBE.html meaux-team.html meaux-doc.html meaux-photo.html meaux-memories.html meaux-media.html meaux-cloud.html meaux-cad.html meaux-learn.html; do
+          for file in MEAUXGLOBE.html meaux-team.html meaux-doc.html meaux-docs.html meaux-photo.html meaux-memories.html meaux-media.html meaux-cloud.html meaux-cad.html meaux-learn.html meaux-talk.html meaux-board.html meaux-mail.html meaux-calendar.html meaux-wallet.html meaux-design.html; do
             if [ -f "$file" ]; then
               echo "  → Uploading $file..."
               wrangler r2 object put inneranimalmedia/$file \
