@@ -1,12 +1,17 @@
 // MeauxLearn - Professional Course Platform
 // Multi-tenant course platform
 // Uses Cloudflare D1 and R2 (NO Supabase)
+// 
+// NOTE: This worker is for MeauxLearn course platform
+// Nonprofit tenants (Inner Animal Media, Southern Pets) use their own workers
+// and preserve their original UI - this worker does NOT override them
 
 export default {
     async fetch(request, env) {
         const url = new URL(request.url);
         const path = url.pathname;
         const method = request.method;
+        const hostname = url.hostname;
 
         // CORS headers
         const corsHeaders = {
@@ -19,6 +24,14 @@ export default {
             return new Response(null, { headers: corsHeaders });
         }
 
+        // Tenant detection - ensure we're on the right subdomain
+        // This worker is for fuelnfreetime/meauxlearn only
+        // Nonprofits use their own workers (inneranimalmedia, southernpets)
+        const isFuelnfreetime = hostname.includes('fuelnfreetime.meauxbility.workers.dev') || 
+                                hostname.includes('meauxlearn.meauxbility.workers.dev') ||
+                                hostname.includes('fuelnfreetime.dev') ||
+                                hostname.includes('meauxlearn.dev');
+
         // Route handling
         try {
             // API Routes
@@ -26,7 +39,7 @@ export default {
                 return handleAPI(path, request, env, corsHeaders);
             }
 
-            // Page Routes
+            // Page Routes (MeauxLearn course platform)
             if (path === '/' || path === '') {
                 return serveHomePage(env, corsHeaders);
             }

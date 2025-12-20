@@ -1,18 +1,21 @@
 {
-	"name": "hybridprosaas-dashboard",
-	"version": "0.0.0",
-	"private": true,
-	"type": "module",
-	"scripts": {
-		"deploy": "wrangler deploy",
-		"dev": "wrangler dev",
-		"start": "wrangler dev",
-		"mcp:start": "node mcp-d1-server.js"
-	},
-	"dependencies": {
-		"@modelcontextprotocol/sdk": "^1.0.4"
-	},
-	"devDependencies": {
-		"wrangler": "^4.55.0"
-	}
+  "name": "hybridprosaas-dashboard",
+  "version": "2.0.0",
+  "description": "Multi-tenant monorepo for Cloudflare Workers",
+  "scripts": {
+    "deploy:all": "npm run deploy:inneranimalmedia && npm run deploy:southernpets && npm run deploy:meauxlearn && npm run deploy:fuelnfreetime",
+    "deploy:inneranimalmedia": "wrangler deploy --config wrangler.inneranimalmedia.jsonc",
+    "deploy:southernpets": "wrangler deploy --config tenants/southernpets/wrangler.jsonc",
+    "deploy:meauxlearn": "wrangler deploy --config tenants/meauxlearn/wrangler.jsonc",
+    "deploy:fuelnfreetime": "wrangler deploy --config wrangler.fuelnfreetime.jsonc",
+    "deploy:tenant": "node scripts/deploy-tenant.js"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "multi-tenant",
+    "monorepo"
+  ],
+  "author": "",
+  "license": "MIT"
 }
