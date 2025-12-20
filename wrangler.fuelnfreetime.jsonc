@@ -7,6 +7,20 @@
     "nodejs_compat"
   ],
   "vars": {
-    "ENVIRONMENT": "production"
-  }
+    "ENVIRONMENT": "production",
+    "CLOUDFLARE_ACCOUNT_ID": "ede6590ac0d2fb7daf155b35653457b2"
+  },
+  "r2_buckets": [
+    {
+      "binding": "R2_STORAGE",
+      "bucket_name": "inneranimalmedia"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "meaux-work-db",
+      "database_id": "2a3a763a-92f1-4633-849e-268ddb31998f"
+    }
+  ]
 }

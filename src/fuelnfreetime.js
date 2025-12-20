@@ -14,6 +14,10 @@ export default {
             return new Response(null, { headers: corsHeaders });
         }
 
+        // Check bindings availability
+        const hasR2 = !!env.R2_STORAGE;
+        const hasD1 = !!env.DB;
+
         // Simple HTML page
         const html = `<!DOCTYPE html>
 <html lang="en">
@@ -156,7 +160,11 @@ export default {
             Open Cloudflare Dashboard
         </a>
         <div class="status">
-            Status: ✅ Online | Worker: fuelnfreetime | Account: Meauxbility
+            Status: ✅ Online | Worker: fuelnfreetime | Account: Meauxbility<br>
+            <small style="opacity: 0.7; margin-top: 0.5rem; display: block;">
+                R2 Storage: ${hasR2 ? '✅ Connected (inneranimalmedia)' : '❌ Not Available'}<br>
+                D1 Database: ${hasD1 ? '✅ Connected (meaux-work-db)' : '❌ Not Available'}
+            </small>
         </div>
     </div>
 </body>
