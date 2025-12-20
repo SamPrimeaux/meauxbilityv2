@@ -27,10 +27,10 @@ export default {
         // Tenant detection - ensure we're on the right subdomain
         // This worker is for fuelnfreetime/meauxlearn only
         // Nonprofits use their own workers (inneranimalmedia, southernpets)
-        const isFuelnfreetime = hostname.includes('fuelnfreetime.meauxbility.workers.dev') || 
-                                hostname.includes('meauxlearn.meauxbility.workers.dev') ||
-                                hostname.includes('fuelnfreetime.dev') ||
-                                hostname.includes('meauxlearn.dev');
+        const isFuelnfreetime = hostname.includes('fuelnfreetime.meauxbility.workers.dev') ||
+            hostname.includes('meauxlearn.meauxbility.workers.dev') ||
+            hostname.includes('fuelnfreetime.dev') ||
+            hostname.includes('meauxlearn.dev');
 
         // Route handling
         try {
