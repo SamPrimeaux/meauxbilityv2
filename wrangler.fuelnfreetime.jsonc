@@ -1,0 +1,12 @@
+{
+  "name": "fuelnfreetime",
+  "main": "src/fuelnfreetime.js",
+  "workers_dev": true,
+  "compatibility_date": "2025-11-17",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "vars": {
+    "ENVIRONMENT": "production"
+  }
+}

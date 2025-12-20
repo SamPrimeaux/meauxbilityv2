@@ -1,0 +1,38 @@
+name: Deploy Fuel & Free Time
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/fuelnfreetime.js'
+      - 'wrangler.fuelnfreetime.jsonc'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Deploy Worker
+        run: |
+          wrangler deploy --config wrangler.fuelnfreetime.jsonc
+
+      - name: Verify Deployment
+        run: |
+          echo "✅ Worker deployed to: https://fuelnfreetime.meauxbility.workers.dev"
+          sleep 3
+          curl -s https://fuelnfreetime.meauxbility.workers.dev | head -5

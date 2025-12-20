@@ -345,7 +345,7 @@ async function handleAWSBedrock(request, env, corsHeaders) {
       }
 
       const bedrockUrl = `https://bedrock-runtime.us-east-1.amazonaws.com/model/${model}/invoke`;
-      
+
       const response = await fetch(bedrockUrl, {
         method: "POST",
         headers: {
@@ -400,7 +400,7 @@ async function handleGoogleGemini(request, env, corsHeaders) {
     }
 
     const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`;
-    
+
     const response = await fetch(geminiUrl, {
       method: "POST",
       headers: {
@@ -458,15 +458,15 @@ async function getUserGitHubToken(env, corsHeaders) {
   try {
     const userId = "default"; // In production, get from session/auth
     const tokenKey = `user-github-tokens/${userId}.json`;
-    
+
     const tokenObject = await env.R2_WEBSITE.get(tokenKey);
     if (!tokenObject) {
       return jsonResponse({ success: true, hasToken: false, message: "No user GitHub token configured" }, 200, corsHeaders);
     }
 
     const tokenData = await tokenObject.json();
-    return jsonResponse({ 
-      success: true, 
+    return jsonResponse({
+      success: true,
       hasToken: true,
       userId: tokenData.userId,
       createdAt: tokenData.createdAt,
@@ -482,7 +482,7 @@ async function deleteUserGitHubToken(env, corsHeaders) {
   try {
     const userId = "default"; // In production, get from session/auth
     const tokenKey = `user-github-tokens/${userId}.json`;
-    
+
     await env.R2_WEBSITE.delete(tokenKey);
     return jsonResponse({ success: true, message: "GitHub token removed successfully" }, 200, corsHeaders);
   } catch (error) {
@@ -494,7 +494,7 @@ async function getUserGitHubRepos(request, env, corsHeaders) {
   try {
     const userId = "default"; // In production, get from session/auth
     const tokenKey = `user-github-tokens/${userId}.json`;
-    
+
     const tokenObject = await env.R2_WEBSITE.get(tokenKey);
     if (!tokenObject) {
       return jsonResponse({ success: true, repos: [], count: 0, message: "No user GitHub token configured. Use /api/user/github/token to connect your token." }, 200, corsHeaders);

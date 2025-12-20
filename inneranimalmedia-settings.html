@@ -166,7 +166,8 @@
                                 <div class="theme-desc">iOS dark theme</div>
                             </div>
                             <svg class="theme-check" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
                             </svg>
                         </button>
 
@@ -182,7 +183,8 @@
                                 <div class="theme-desc">Cosmic background with white nav</div>
                             </div>
                             <svg class="theme-check" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
                             </svg>
                         </button>
                     </div>
@@ -769,7 +771,7 @@
         .galaxy-preview .preview-stars {
             position: absolute;
             inset: 0;
-            background-image: 
+            background-image:
                 radial-gradient(1px 1px at 20% 30%, white, transparent),
                 radial-gradient(1px 1px at 60% 70%, white, transparent),
                 radial-gradient(1px 1px at 50% 50%, white, transparent);
@@ -847,7 +849,7 @@
             // Update all pages with theme
             document.body.setAttribute('data-theme', theme);
             localStorage.setItem('theme', theme);
-            
+
             // Update active state in settings
             document.querySelectorAll('.theme-option').forEach(btn => {
                 btn.classList.remove('active');

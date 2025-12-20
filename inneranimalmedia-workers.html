@@ -85,7 +85,7 @@
     .galaxy-stars {
       position: absolute;
       inset: 0;
-      background-image: 
+      background-image:
         radial-gradient(2px 2px at 20% 30%, white, transparent),
         radial-gradient(2px 2px at 60% 70%, white, transparent),
         radial-gradient(1px 1px at 50% 50%, white, transparent),
@@ -133,18 +133,24 @@
     }
 
     @keyframes twinkle {
-      0%, 100% {
+
+      0%,
+      100% {
         opacity: 0.6;
       }
+
       50% {
         opacity: 1;
       }
     }
 
     @keyframes float {
-      0%, 100% {
+
+      0%,
+      100% {
         transform: translate(0, 0) scale(1);
       }
+
       50% {
         transform: translate(-20px, -20px) scale(1.05);
       }
@@ -156,55 +162,55 @@
       min-height: 100vh;
     }
 
-        /* ==================== SIDENAV ==================== */
-        .sidenav {
-            width: var(--nav-width);
-            background: var(--bg-secondary);
-            backdrop-filter: var(--blur);
-            border-right: 1px solid var(--border);
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            z-index: 1000;
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
+    /* ==================== SIDENAV ==================== */
+    .sidenav {
+      width: var(--nav-width);
+      background: var(--bg-secondary);
+      backdrop-filter: var(--blur);
+      border-right: 1px solid var(--border);
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 1000;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-        [data-theme="galaxy"] .sidenav {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(40px) saturate(180%);
-            border-right: 1px solid rgba(139, 92, 246, 0.2);
-            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
-        }
+    [data-theme="galaxy"] .sidenav {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(40px) saturate(180%);
+      border-right: 1px solid rgba(139, 92, 246, 0.2);
+      box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+    }
 
-        [data-theme="galaxy"] .sidenav-header {
-            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
-        }
+    [data-theme="galaxy"] .sidenav-header {
+      border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+    }
 
-        [data-theme="galaxy"] .logo {
-            color: #1F2937;
-        }
+    [data-theme="galaxy"] .logo {
+      color: #1F2937;
+    }
 
-        [data-theme="galaxy"] .nav-item {
-            color: #64748B;
-        }
+    [data-theme="galaxy"] .nav-item {
+      color: #64748B;
+    }
 
-        [data-theme="galaxy"] .nav-item:hover {
-            background: rgba(139, 92, 246, 0.1);
-            color: #8B5CF6;
-        }
+    [data-theme="galaxy"] .nav-item:hover {
+      background: rgba(139, 92, 246, 0.1);
+      color: #8B5CF6;
+    }
 
-        [data-theme="galaxy"] .nav-item.active {
-            background: rgba(139, 92, 246, 0.2);
-            color: #8B5CF6;
-        }
+    [data-theme="galaxy"] .nav-item.active {
+      background: rgba(139, 92, 246, 0.2);
+      color: #8B5CF6;
+    }
 
-        [data-theme="galaxy"] .nav-section-title {
-            color: #94A3B8;
-        }
+    [data-theme="galaxy"] .nav-section-title {
+      color: #94A3B8;
+    }
 
     .sidenav.collapsed {
       width: var(--nav-collapsed);
@@ -339,75 +345,75 @@
       width: 0;
     }
 
-        /* ==================== MAIN CONTENT ==================== */
-        .main-content {
-            flex: 1;
-            margin-left: var(--nav-width);
-            transition: var(--transition);
-            position: relative;
-            z-index: 1;
-        }
+    /* ==================== MAIN CONTENT ==================== */
+    .main-content {
+      flex: 1;
+      margin-left: var(--nav-width);
+      transition: var(--transition);
+      position: relative;
+      z-index: 1;
+    }
 
-        .sidenav.collapsed+.main-content {
-            margin-left: var(--nav-collapsed);
-        }
+    .sidenav.collapsed+.main-content {
+      margin-left: var(--nav-collapsed);
+    }
 
-        /* ==================== STICKY HEADER ==================== */
-        .sticky-header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: var(--blur);
-            border-bottom: 1px solid var(--border);
-            padding: 16px 20px;
-        }
+    /* ==================== STICKY HEADER ==================== */
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: var(--blur);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 20px;
+    }
 
-        [data-theme="galaxy"] .sticky-header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(40px) saturate(180%);
-            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
-        }
+    [data-theme="galaxy"] .sticky-header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(40px) saturate(180%);
+      border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+    }
 
-        [data-theme="galaxy"] .page-title {
-            color: #1F2937;
-        }
+    [data-theme="galaxy"] .page-title {
+      color: #1F2937;
+    }
 
-        [data-theme="galaxy"] .stat-value {
-            color: #8B5CF6;
-        }
+    [data-theme="galaxy"] .stat-value {
+      color: #8B5CF6;
+    }
 
-        [data-theme="galaxy"] .stat-label {
-            color: #64748B;
-        }
+    [data-theme="galaxy"] .stat-label {
+      color: #64748B;
+    }
 
-        [data-theme="galaxy"] .search-box input {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            color: #1F2937;
-        }
+    [data-theme="galaxy"] .search-box input {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      color: #1F2937;
+    }
 
-        [data-theme="galaxy"] .search-box input:focus {
-            background: rgba(255, 255, 255, 1);
-            border-color: #8B5CF6;
-        }
+    [data-theme="galaxy"] .search-box input:focus {
+      background: rgba(255, 255, 255, 1);
+      border-color: #8B5CF6;
+    }
 
-        [data-theme="galaxy"] .filter-btn {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            color: #1F2937;
-        }
+    [data-theme="galaxy"] .filter-btn {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      color: #1F2937;
+    }
 
-        [data-theme="galaxy"] .filter-btn:hover {
-            background: rgba(255, 255, 255, 1);
-            border-color: rgba(139, 92, 246, 0.4);
-        }
+    [data-theme="galaxy"] .filter-btn:hover {
+      background: rgba(255, 255, 255, 1);
+      border-color: rgba(139, 92, 246, 0.4);
+    }
 
-        [data-theme="galaxy"] .filter-btn.active {
-            background: linear-gradient(135deg, #8B5CF6, #6366F1);
-            border-color: transparent;
-            color: white;
-        }
+    [data-theme="galaxy"] .filter-btn.active {
+      background: linear-gradient(135deg, #8B5CF6, #6366F1);
+      border-color: transparent;
+      color: white;
+    }
 
     .header-content {
       display: flex;
@@ -827,43 +833,43 @@
       margin-bottom: 48px;
     }
 
-        /* ==================== MODULE CARDS (iOS Style) ==================== */
-        .module-card {
-            background: var(--card);
-            border-radius: 20px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            border: 1px solid var(--border);
-        }
+    /* ==================== MODULE CARDS (iOS Style) ==================== */
+    .module-card {
+      background: var(--card);
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      border: 1px solid var(--border);
+    }
 
-        [data-theme="galaxy"] .module-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(40px) saturate(180%);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        }
+    [data-theme="galaxy"] .module-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(40px) saturate(180%);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
 
-        .module-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px var(--shadow);
-            border-color: rgba(0, 122, 255, 0.3);
-        }
+    .module-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px var(--shadow);
+      border-color: rgba(0, 122, 255, 0.3);
+    }
 
-        [data-theme="galaxy"] .module-card:hover {
-            border-color: rgba(139, 92, 246, 0.4);
-            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.3);
-        }
+    [data-theme="galaxy"] .module-card:hover {
+      border-color: rgba(139, 92, 246, 0.4);
+      box-shadow: 0 12px 40px rgba(139, 92, 246, 0.3);
+    }
 
-        [data-theme="galaxy"] .module-name {
-            color: #1F2937;
-        }
+    [data-theme="galaxy"] .module-name {
+      color: #1F2937;
+    }
 
-        [data-theme="galaxy"] .module-category,
-        [data-theme="galaxy"] .module-status {
-            color: #64748B;
-        }
+    [data-theme="galaxy"] .module-category,
+    [data-theme="galaxy"] .module-status {
+      color: #64748B;
+    }
 
     /* Thumbnail with Preview */
     .module-thumbnail {
@@ -1033,45 +1039,45 @@
       color: var(--text-secondary);
     }
 
-        /* ==================== MODAL SYSTEM (iOS Style) ==================== */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            animation: fadeIn 0.3s ease;
-        }
+    /* ==================== MODAL SYSTEM (iOS Style) ==================== */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeIn 0.3s ease;
+    }
 
-        [data-theme="galaxy"] .modal-content {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(40px) saturate(180%);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-        }
+    [data-theme="galaxy"] .modal-content {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(40px) saturate(180%);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+    }
 
-        [data-theme="galaxy"] .modal-title {
-            color: #1F2937;
-        }
+    [data-theme="galaxy"] .modal-title {
+      color: #1F2937;
+    }
 
-        [data-theme="galaxy"] .info-label {
-            color: #64748B;
-        }
+    [data-theme="galaxy"] .info-label {
+      color: #64748B;
+    }
 
-        [data-theme="galaxy"] .info-value {
-            color: #1F2937;
-        }
+    [data-theme="galaxy"] .info-value {
+      color: #1F2937;
+    }
 
-        [data-theme="galaxy"] .info-row {
-            background: rgba(139, 92, 246, 0.05);
-        }
+    [data-theme="galaxy"] .info-row {
+      background: rgba(139, 92, 246, 0.05);
+    }
 
     @keyframes fadeIn {
       from {
@@ -1334,17 +1340,17 @@
 </head>
 
 <body data-theme="dark">
-    <!-- Galaxy Background -->
-    <div class="galaxy-background">
-        <div class="galaxy-stars"></div>
-        <div class="galaxy-nebula"></div>
-        <div class="galaxy-nebula"></div>
-        <div class="galaxy-nebula"></div>
-    </div>
+  <!-- Galaxy Background -->
+  <div class="galaxy-background">
+    <div class="galaxy-stars"></div>
+    <div class="galaxy-nebula"></div>
+    <div class="galaxy-nebula"></div>
+    <div class="galaxy-nebula"></div>
+  </div>
 
-    <div class="app-container">
-        <!-- Sidenav -->
-        <nav class="sidenav" id="sidenav">
+  <div class="app-container">
+    <!-- Sidenav -->
+    <nav class="sidenav" id="sidenav">
       <div class="sidenav-header">
         <a href="/" class="logo">
           <div class="logo-icon">
@@ -1451,15 +1457,18 @@
 
         <div class="nav-section">
           <div class="nav-section-title">Theme</div>
-          <button class="nav-item" onclick="setTheme('dark')" id="themeDark" style="width: 100%; text-align: left; border: none; background: none; font-family: inherit; cursor: pointer;">
+          <button class="nav-item" onclick="setTheme('dark')" id="themeDark"
+            style="width: 100%; text-align: left; border: none; background: none; font-family: inherit; cursor: pointer;">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
             <span class="nav-text">Dark</span>
           </button>
-          <button class="nav-item" onclick="setTheme('galaxy')" id="themeGalaxy" style="width: 100%; text-align: left; border: none; background: none; font-family: inherit; cursor: pointer;">
+          <button class="nav-item" onclick="setTheme('galaxy')" id="themeGalaxy"
+            style="width: 100%; text-align: left; border: none; background: none; font-family: inherit; cursor: pointer;">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+              <path
+                d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
               <circle cx="12" cy="12" r="4" />
             </svg>
             <span class="nav-text">Galaxy</span>
@@ -1905,7 +1914,7 @@
     function setTheme(theme) {
       document.body.setAttribute('data-theme', theme);
       localStorage.setItem('theme', theme);
-      
+
       // Update active state
       document.querySelectorAll('[id^="theme"]').forEach(btn => {
         btn.classList.remove('active');
